@@ -1,0 +1,8 @@
+{
+  "name": "Programmer Dating",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue-vite",
+  "id": "9452d3eb"
+}
