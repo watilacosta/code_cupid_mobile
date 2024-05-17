@@ -4,11 +4,11 @@
       <ion-router-outlet></ion-router-outlet>
       <ion-tab-bar slot="bottom">
         <ion-tab-button tab="home" href="/tabs/home">
-          <ion-icon aria-hidden="true" :icon="homeOutline" />
+          <ion-icon aria-hidden="true" :icon="homeSharp" />
         </ion-tab-button>
 
         <ion-tab-button tab="like" href="/tabs/like">
-          <ion-icon aria-hidden="true" :icon="heartOutline" />
+          <ion-icon aria-hidden="true" :icon="heartSharp" />
         </ion-tab-button>
 
         <ion-tab-button tab="message" href="/tabs/message">
@@ -34,8 +34,8 @@ import {
 } from '@ionic/vue';
 
 import {
-  homeOutline,
-  heartOutline,
+  homeSharp,
+  heartSharp,
   chatbubblesOutline,
   personOutline
 } from 'ionicons/icons';

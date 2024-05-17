@@ -17,6 +17,11 @@ const routes: Array<RouteRecordRaw> = [
         redirect: '/tabs/home'
       },
       {
+        path: '/login',
+        name: 'Login',
+        component: () => import('@/views/LoginPage.vue')
+      },
+      {
         path: 'home',
         component: () => import('@/views/HomePage.vue')
       },
@@ -41,7 +46,6 @@ const router = createRouter({
   routes
 })
 
-// NAVIGATION GUARD
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
 
