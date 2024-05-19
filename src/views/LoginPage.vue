@@ -22,7 +22,7 @@
         </ion-col>
       </ion-row>
 
-      <ion-row class="ion-margin-horizontal ion-padding-horizontal">
+      <ion-row class="ion-padding-horizontal">
         <ion-col class="ion-padding-horizontal">
           <ion-button
             id="btn_login_google"
@@ -31,17 +31,23 @@
             size="large"
             color="light"
             mode="md">
-            <ion-img
-              src="resources/icons8-google-48.png"
-              alt="logo google"
-              class="ion-margin-horizontal btn-img">
-            </ion-img>
-            Login with Google
+            <ion-grid :fixed="true">
+              <ion-row class="ion-align-items-center ion-justify-content-center">
+                <ion-col size="2">
+                  <ion-img
+                    src="resources/icons8-google-48.png"
+                    alt="logo google"
+                    class="ion-margin-horizontal btn-img">
+                  </ion-img>
+                </ion-col>
+                <ion-col>Login with Google</ion-col>
+              </ion-row>
+            </ion-grid>
           </ion-button>
         </ion-col>
       </ion-row>
 
-      <ion-row class="ion-margin-horizontal ion-padding-horizontal">
+      <ion-row class="ion-padding-horizontal">
         <ion-col class="ion-padding-horizontal">
           <ion-button
             id="btn_login_facebook"
@@ -50,32 +56,43 @@
             size="large"
             color="light"
             mode="md">
-            <ion-img
-              src="resources/icons8-facebook-48.png"
-              alt="logo google"
-              class="ion-margin-horizontal btn-img">
-            </ion-img>
-            Login with Facebook
+            <ion-grid :fixed="true">
+              <ion-row class="ion-align-items-center ion-justify-content-center">
+                <ion-col size="2">
+                  <ion-img
+                    src="resources/icons8-facebook-48.png"
+                    alt="logo google"
+                    class="ion-margin-horizontal btn-img">
+                  </ion-img>
+                </ion-col>
+                <ion-col>Login with Facebook</ion-col>
+              </ion-row>
+            </ion-grid>
           </ion-button>
         </ion-col>
       </ion-row>
 
-      <ion-row class="ion-margin-horizontal ion-padding-horizontal">
+      <ion-row class="ion-padding-horizontal">
         <ion-col class="ion-padding-horizontal">
           <ion-button
-            id="btn_login_phone"
+            id="btn_login_email"
             expand="full"
             shape="round"
             size="large"
             color="light"
-            mode="md"
-          >
-            <ion-img
-              src="resources/icons8-email-48.png"
-              alt="logo google"
-              class="ion-margin-horizontal btn-img">
-            </ion-img>
-            Login with Email
+            mode="md">
+            <ion-grid :fixed="true">
+              <ion-row class="ion-align-items-center ion-justify-content-center">
+                <ion-col size="2">
+                  <ion-img
+                    src="resources/icons8-email-48.png"
+                    alt="logo google"
+                    class="ion-margin-horizontal btn-img">
+                  </ion-img>
+                </ion-col>
+                <ion-col>Login with Email</ion-col>
+              </ion-row>
+            </ion-grid>
           </ion-button>
         </ion-col>
       </ion-row>
@@ -142,7 +159,7 @@ ion-thumbnail {
 }
 
 #btn-signup {
-  margin-top: 50px;
+  margin-top: 5%;
   margin-bottom: 0;
 }
 </style>
