@@ -34,19 +34,22 @@
         <ion-col size="4">
           <ion-select
             class="input-signup"
+            justify="space-between"
             color="light"
-            placeholder="Country Code"
             aria-label="Country code"
-            value="+55"
             fill="outline"
-            label="Country Code"
+            interface="popover"
+            @ion-change="handleChange($event)"
+            :value="selectedCountryCode"
           >
-            <ion-select-option value="+55">+55</ion-select-option>
-            <ion-select-option value="+01">+01</ion-select-option>
-            <ion-select-option value="+608">+608</ion-select-option>
+            <ion-select-option
+              v-for="countryCodes in computedCountryCodes"
+              :value="countryCodes.dialingcode">
+              {{ countryCodes.country }} {{ countryCodes.dialingcode }}
+            </ion-select-option>
           </ion-select>
         </ion-col>
-        <ion-col size="8">
+        <ion-col>
           <ion-input
             class="input-signup"
             color="light"
@@ -123,7 +126,8 @@ import {
   IonCol,
   IonInput,
   IonSelect,
-  IonSelectOption
+  IonSelectOption,
+  onIonViewWillEnter,
 } from '@ionic/vue';
 import {
   arrowBack,
@@ -131,11 +135,64 @@ import {
   mailOutline,
   phonePortraitOutline
 } from 'ionicons/icons';
+import { computed, ref } from 'vue';
 
 const ionRouter = useIonRouter();
+const selectedCountryCode = ref("")
+
+// LIFECICLE METHODS
+onIonViewWillEnter(() => {
+  computedCountryCodes
+  selectedCountryCode.value = computedCountryCodes.value[0].dialingcode
+})
 
 useBackButton(10, () => {
   ionRouter.navigate('/login', 'forward', 'replace')
+})
+
+const getListCodes = () => {
+  return {
+    codes: [
+      { country: 'US', dialingcode: '+1' },
+      { country: 'GB', dialingcode: '+44' },
+      { country: 'BR', dialingcode: '+55' },
+      { country: 'IN', dialingcode: '+91' },
+      { country: 'JP', dialingcode: '+81' },
+      { country: 'DE', dialingcode: '+49' },
+      { country: 'FR', dialingcode: '+33' },
+      { country: 'CN', dialingcode: '+86' },
+      { country: 'IT', dialingcode: '+39' },
+      { country: 'RU', dialingcode: '+7' },
+      { country: 'AU', dialingcode: '+61' },
+      { country: 'ES', dialingcode: '+34' },
+      { country: 'ZA', dialingcode: '+27' },
+      { country: 'NZ', dialingcode: '+64' },
+      { country: 'KR', dialingcode: '+82' },
+      { country: 'MX', dialingcode: '+52' },
+      { country: 'AR', dialingcode: '+54' },
+      { country: 'ID', dialingcode: '+62' },
+      { country: 'NO', dialingcode: '+47' },
+      { country: 'SE', dialingcode: '+46' },
+      { country: 'NL', dialingcode: '+31' },
+      { country: 'CH', dialingcode: '+41' },
+      { country: 'BE', dialingcode: '+32' },
+      { country: 'GR', dialingcode: '+30' },
+      { country: 'DK', dialingcode: '+45' },
+      { country: 'TR', dialingcode: '+90' },
+      { country: 'NG', dialingcode: '+234' },
+      { country: 'EG', dialingcode: '+20' },
+      { country: 'TH', dialingcode: '+66' },
+      { country: 'SG', dialingcode: '+65' }
+    ]
+  }
+}
+
+const handleChange = (ev: any) => {
+  selectedCountryCode.value = ev.detail.value
+}
+
+const computedCountryCodes = computed(() => {
+  return getListCodes().codes
 })
 </script>
 
@@ -155,5 +212,15 @@ ion-input.input-signup {
 .title {
   color: #000;
   margin-bottom: 15%;
+}
+
+ion-select-option {
+  color: #8E8E8E;
+  --ion-background-color: #fff
+}
+
+ion-select {
+  color: #8E8E8E;
+  --ion-background-color: #fff
 }
 </style>
