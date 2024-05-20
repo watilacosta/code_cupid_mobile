@@ -100,7 +100,13 @@
       <ion-row> 
         <ion-col class="ion-margin-top">
           <div class="ion-text-center">
-            <ion-button id="btn-signup" fill="clear" color="light">Sign-up</ion-button>
+            <ion-button
+              @click="() => router.push('/sign-up')"
+              id="btn-signup"
+              fill="clear"
+              color="light">
+              Sign-up
+            </ion-button>
           </div>
         </ion-col>
       </ion-row>
@@ -117,14 +123,12 @@ import {
   IonRow,
   IonButton,
   IonText,
-  IonThumbnail
+  IonThumbnail,
+  IonGrid
 } from '@ionic/vue';
-import { useAuthStore } from '@/store/auth';
-import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
-const authStore = useAuthStore()
-const email = ref("")
-const password = ref("")
+const router = useRouter();
 </script>
 
 <style scoped>
@@ -138,13 +142,13 @@ const password = ref("")
 }
 
 .ion-margin-vertical {
-  margin-top: 128px;
-  margin-bottom: 128px;
+  margin-top: 70%;
+  margin-bottom: 70%;
 }
 
 ion-button {
-  --padding-top: 10px;
-  --padding-bottom: 10px;
+  --padding-top: 1%;
+  --padding-bottom: 1%;
 }
 
 .btn-img {
@@ -155,7 +159,7 @@ ion-button {
 ion-thumbnail {
   --size: 180px;
   --border-radius: 90px;
-  margin-bottom: 256px;
+  margin-bottom: 65%;
 }
 
 #btn-signup {

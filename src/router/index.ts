@@ -14,6 +14,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/LoginPage.vue')
   },
   {
+    path: '/sign-up',
+    name: 'Signup',
+    component: () => import('@/views/SignupPage.vue')
+  },
+  {
     path: '/tabs/',
     component: TabsPage,
     children: [
@@ -49,10 +54,14 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
 
-  if(!authStore.isAuthenticated && to.name !== "Login")
+  if (!authStore.isAuthenticated && to.name !== "Login" && to.name !== "Signup") {
     next({ name: "Login" })
-  else if (authStore.isAuthenticated && to.name === "Login") next({ name: "" })
-  else next()
+  } else if (authStore.isAuthenticated && (to.name === "Login" || to.name === "Signup")) {
+    next({ name: "" })
+  } else {
+    next()
+  }
 })
+
 
 export default router
