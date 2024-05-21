@@ -11,7 +11,8 @@
 
       <ion-row>
         <ion-col>
-          <h1 class="title">Sign Up</h1>
+          <h1 class="title">Register your account</h1>
+          <h2 class="subtitle">Hello user, meet amazing people.</h2>
         </ion-col>
       </ion-row>
 
@@ -67,28 +68,25 @@
         <ion-col>
           <ion-input
             class="input-signup"
-            type="password"
+            :type="showPassword ? 'text' : 'password'"
             color="light"
             fill="outline"
             label-placement="stacked"
             placeholder="Password"
             error-text="Invalid password">
             <ion-icon slot="start" :icon="lockClosedOutline" aria-hidden="true"></ion-icon>
-          </ion-input>
-        </ion-col>
-      </ion-row>
-
-      <ion-row>
-        <ion-col>
-          <ion-input
-            class="input-signup"
-            type="password"
-            color="light"
-            fill="outline"
-            label-placement="stacked"
-            placeholder="Confirm Password"
-            error-text="Invalid password_confirmation">
-            <ion-icon slot="start" :icon="lockClosedOutline" aria-hidden="true"></ion-icon>
+            <ion-button
+              @click="togglePasswordVisibility"
+              fill="clear"
+              slot="end"
+              aria-label="Show/hide"
+            >
+              <ion-icon
+                :icon="lockIcon ? eyeOffOutline : eyeOutline"
+                slot="icon-only"
+                aria-hidden="true">
+              </ion-icon>
+            </ion-button>
           </ion-input>
         </ion-col>
       </ion-row>
@@ -97,6 +95,7 @@
         <ion-col class="ion-margin-top">
           <div class="ion-text-center">
             <ion-button
+              class="signup-button"
               fill="solid"
               color="primary"
               expand="full"
@@ -131,6 +130,8 @@ import {
 } from '@ionic/vue';
 import {
   arrowBack,
+  eyeOffOutline,
+  eyeOutline,
   lockClosedOutline,
   mailOutline,
   phonePortraitOutline
@@ -139,8 +140,10 @@ import { computed, ref } from 'vue';
 
 const ionRouter = useIonRouter();
 const selectedCountryCode = ref("")
+const showPassword = ref(false)
+const lockIcon = ref(true)
 
-// LIFECICLE METHODS
+// LIFECYCLE METHODS
 onIonViewWillEnter(() => {
   computedCountryCodes
   selectedCountryCode.value = computedCountryCodes.value[0].dialingcode
@@ -187,6 +190,11 @@ const getListCodes = () => {
   }
 }
 
+const togglePasswordVisibility = () => {
+  showPassword.value = !showPassword.value
+  lockIcon.value = !lockIcon.value
+}
+
 const handleChange = (ev: any) => {
   selectedCountryCode.value = ev.detail.value
 }
@@ -204,13 +212,21 @@ ion-content {
 ion-input.input-signup {
   --color: #8E8E8E;
   --placeholder-color: #8E8E8E;
-
   --padding-end: 10px;
   --padding-start: 10px;
 }
 
 .title {
-  color: #000;
+  color: #a020f0;
+  font-size: 32px;
+  margin-top: 5%;
+  margin-bottom: 0;
+}
+
+.subtitle {
+  color: #8E8E8E;
+  font-size: 16px;
+  margin-top: 2%;
   margin-bottom: 15%;
 }
 
@@ -222,5 +238,10 @@ ion-select-option {
 ion-select {
   color: #8E8E8E;
   --ion-background-color: #fff
+}
+
+.signup-button {
+  margin-top: 60%;
+  --ion-background-color: #a020f0;
 }
 </style>
