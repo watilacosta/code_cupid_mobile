@@ -17,99 +17,120 @@
         </ion-col>
       </ion-row>
 
-      <ion-row>
-        <ion-col>
-          <ion-input
-            class="input-signup"
-            color="light"
-            fill="outline"
-            label-placement="stacked"
-            placeholder="Email"
-            error-text="Invalid email"
-          >
-            <ion-icon slot="start" :icon="mailOutline" aria-hidden="true"></ion-icon>
-          </ion-input>
-        </ion-col>
-      </ion-row>
-
-      <ion-row>
-        <ion-col size="4">
-          <ion-select
-            class="input-signup"
-            justify="space-between"
-            color="light"
-            aria-label="Country code"
-            fill="outline"
-            interface="popover"
-            @ion-change="handleChange($event)"
-            :value="selectedCountryCode"
-          >
-            <ion-select-option
-              v-for="countryCodes in computedCountryCodes"
-              :value="countryCodes.dialingcode">
-              {{ countryCodes.country }} {{ countryCodes.dialingcode }}
-            </ion-select-option>
-          </ion-select>
-        </ion-col>
-        <ion-col>
-          <ion-input
-            class="input-signup"
-            color="light"
-            fill="outline"
-            type="tel"
-            label-placement="stacked"
-            placeholder="Phone"
-            error-text="Invalid Phone">
-            <ion-icon slot="start" :icon="phonePortraitOutline" aria-hidden="true"></ion-icon>
-          </ion-input>
-        </ion-col>
-      </ion-row>
-
-      <ion-row>
-        <ion-col>
-          <ion-input
-            class="input-signup"
-            :type="showPassword ? 'text' : 'password'"
-            color="light"
-            fill="outline"
-            label-placement="stacked"
-            placeholder="Password"
-            error-text="Invalid password">
-            <ion-icon slot="start" :icon="lockClosedOutline" aria-hidden="true"></ion-icon>
-            <ion-button
-              @click="togglePasswordVisibility"
-              fill="clear"
-              slot="end"
-              aria-label="Show/hide"
+      <form @submit.prevent="submitForm">
+        <ion-row>
+          <ion-col>
+            <ion-input
+              class="input-signup"
+              color="light"
+              fill="outline"
+              label-placement="stacked"
+              placeholder="Email"
+              error-text="Invalid email"
             >
-              <ion-icon
-                :icon="lockIcon ? eyeOffOutline : eyeOutline"
-                slot="icon-only"
-                aria-hidden="true"
-                color="medium">
-              </ion-icon>
-            </ion-button>
-          </ion-input>
-        </ion-col>
-      </ion-row>
+              <ion-icon slot="start" :icon="mailOutline" aria-hidden="true"></ion-icon>
+            </ion-input>
+          </ion-col>
+        </ion-row>
 
-      <ion-row class="ion-margin-top"> 
-        <ion-col class="ion-margin-top">
-          <div class="ion-text-center">
-            <ion-button
-              class="signup-button"
-              fill="solid"
-              color="primary"
-              expand="full"
-              shape="round"
-              size="large"
-              mode="md"
+        <ion-row>
+          <ion-col size="4">
+            <ion-select
+              class="input-signup"
+              justify="space-between"
+              color="light"
+              aria-label="Country code"
+              fill="outline"
+              interface="popover"
+              @ion-change="handleChange($event)"
+              :value="selectedCountryCode"
             >
-              Sign-up
-            </ion-button>
-          </div>
-        </ion-col>
-      </ion-row>
+              <ion-select-option
+                v-for="countryCodes in computedCountryCodes"
+                :key="countryCodes.dialingcode"
+                :value="countryCodes.dialingcode">
+                {{ countryCodes.country }} {{ countryCodes.dialingcode }}
+              </ion-select-option>
+            </ion-select>
+          </ion-col>
+          <ion-col>
+            <ion-input
+              class="input-signup"
+              color="light"
+              fill="outline"
+              type="tel"
+              label-placement="stacked"
+              placeholder="Phone"
+              error-text="Invalid Phone">
+              <ion-icon slot="start" :icon="phonePortraitOutline" aria-hidden="true"></ion-icon>
+            </ion-input>
+          </ion-col>
+        </ion-row>
+
+        <ion-row>
+          <ion-col>
+            <ion-input
+              class="input-signup"
+              :type="showPassword ? 'text' : 'password'"
+              color="light"
+              fill="outline"
+              label-placement="stacked"
+              placeholder="Password"
+              error-text="Invalid password">
+              <ion-icon slot="start" :icon="lockClosedOutline" aria-hidden="true"></ion-icon>
+              <ion-button
+                @click="togglePasswordVisibility"
+                fill="clear"
+                slot="end"
+                aria-label="Show/hide"
+              >
+                <ion-icon
+                  :icon="lockIcon ? eyeOffOutline : eyeOutline"
+                  slot="icon-only"
+                  aria-hidden="true"
+                  color="medium">
+                </ion-icon>
+              </ion-button>
+            </ion-input>
+          </ion-col>
+        </ion-row>
+
+        <ion-row class="ion-margin-top"> 
+          <ion-col class="ion-margin-top">
+            <div class="ion-text-center">
+              <ion-button
+                class="signup-button"
+                fill="solid"
+                color="primary"
+                expand="full"
+                shape="round"
+                size="large"
+                mode="md"
+              >
+                Sign-up
+              </ion-button>
+            </div>
+          </ion-col>
+        </ion-row>
+
+        <ion-row> 
+          <ion-col>
+            <div class="ion-text-center">
+              <ion-button
+                @click="() => router.go(-1)"
+                fill="clear"
+                color="medium"
+                expand="full"
+                shape="round"
+                size="large"
+                mode="md"
+              >
+                Login
+              </ion-button>
+            </div>
+          </ion-col>
+        </ion-row>
+      </form>
     </ion-content>
   </ion-page>
 </template>
@@ -151,6 +172,12 @@ onIonViewWillEnter(() => {
   selectedCountryCode.value = computedCountryCodes.value[0].dialingcode
 })
 
+// COMPUTED METHODS
+const computedCountryCodes = computed(() => {
+  return getListCodes().codes
+})
+
+// OTHERS METHODS
 useBackButton(10, () => {
   ionRouter.navigate('/login', 'forward', 'replace')
 })
@@ -201,9 +228,9 @@ const handleChange = (ev: any) => {
   selectedCountryCode.value = ev.detail.value
 }
 
-const computedCountryCodes = computed(() => {
-  return getListCodes().codes
-})
+const submitForm = () => {
+  
+}
 </script>
 
 <style scoped>
@@ -219,7 +246,7 @@ ion-input.input-signup {
 }
 
 .title {
-  color: #a020f0;
+  color: #5f5f5f;
   font-size: 32px;
   margin-top: 5%;
   margin-bottom: 0;
@@ -243,7 +270,7 @@ ion-select {
 }
 
 .signup-button {
-  margin-top: 60%;
+  margin-top: 50%;
   --ion-background-color: #a020f0;
 }
 </style>
