@@ -5,6 +5,7 @@
         @click="() => router.go(-1)"
         shape="round"
         fill="clear"
+        color="medium"
       >
         <ion-icon slot="icon-only" :icon="arrowBack"></ion-icon>
       </ion-button>
@@ -84,7 +85,8 @@
               <ion-icon
                 :icon="lockIcon ? eyeOffOutline : eyeOutline"
                 slot="icon-only"
-                aria-hidden="true">
+                aria-hidden="true"
+                color="medium">
               </ion-icon>
             </ion-button>
           </ion-input>
