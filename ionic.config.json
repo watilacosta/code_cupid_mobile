@@ -1,7 +1,13 @@
 {
   "name": "Programmer Dating",
   "integrations": {
-    "capacitor": {}
+    "capacitor": {
+      "plugins": {
+        "CapacitorHttp": {
+          "enabled": true
+        }
+      }
+    }
   },
   "type": "vue-vite",
   "id": "9452d3eb"

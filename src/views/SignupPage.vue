@@ -1,5 +1,13 @@
 <template>
   <ion-page>
+    <ion-alert
+      :header="header"
+      :message="message"
+      :buttons="['Ok']"
+      :is-open="isOpen"
+      @didDismiss="setOpen(false)"
+    ></ion-alert>
+
     <ion-content class="ion-padding">
       <ion-button 
         @click="() => router.go(-1)"
@@ -21,6 +29,7 @@
         <ion-row>
           <ion-col>
             <ion-input
+              v-model="email"
               class="input-signup"
               color="light"
               fill="outline"
@@ -36,6 +45,7 @@
         <ion-row>
           <ion-col size="4">
             <ion-select
+              v-model="selectedCountryCode"
               class="input-signup"
               justify="space-between"
               color="light"
@@ -55,6 +65,7 @@
           </ion-col>
           <ion-col>
             <ion-input
+              v-model="phone_number"
               class="input-signup"
               color="light"
               fill="outline"
@@ -70,6 +81,7 @@
         <ion-row>
           <ion-col>
             <ion-input
+              v-model="password"
               class="input-signup"
               :type="showPassword ? 'text' : 'password'"
               color="light"
@@ -99,6 +111,7 @@
           <ion-col class="ion-margin-top">
             <div class="ion-text-center">
               <ion-button
+                @click="submitForm"
                 class="signup-button"
                 fill="solid"
                 color="primary"
@@ -112,25 +125,25 @@
             </div>
           </ion-col>
         </ion-row>
-
-        <ion-row> 
-          <ion-col>
-            <div class="ion-text-center">
-              <ion-button
-                @click="() => router.go(-1)"
-                fill="clear"
-                color="medium"
-                expand="full"
-                shape="round"
-                size="large"
-                mode="md"
-              >
-                Login
-              </ion-button>
-            </div>
-          </ion-col>
-        </ion-row>
       </form>
+
+      <ion-row> 
+        <ion-col>
+          <div class="ion-text-center">
+            <ion-button
+              @click="() => router.go(-1)"
+              fill="clear"
+              color="medium"
+              expand="full"
+              shape="round"
+              size="large"
+              mode="md"
+            >
+              Login
+            </ion-button>
+          </div>
+        </ion-col>
+      </ion-row>
     </ion-content>
   </ion-page>
 </template>
@@ -138,6 +151,7 @@
 <script setup lang="ts">
 import router from '@/router';
 import {
+  IonAlert,
   IonPage,
   IonContent,
   useBackButton,
@@ -160,16 +174,32 @@ import {
   phonePortraitOutline
 } from 'ionicons/icons';
 import { computed, ref } from 'vue';
+import { httpPost } from '@/utils/api'
 
 const ionRouter = useIonRouter();
 const selectedCountryCode = ref("")
 const showPassword = ref(false)
 const lockIcon = ref(true)
+const email = ref("")
+const phone_number = ref("")
+const password = ref("")
+const message = ref('')
+const header = ref('')
+const isOpen = ref(false)
+
+interface Payload {
+  user: {
+    email: string,
+    phone_number: string,
+    password: string
+  }
+}
 
 // LIFECYCLE METHODS
 onIonViewWillEnter(() => {
   computedCountryCodes
   selectedCountryCode.value = computedCountryCodes.value[0].dialingcode
+
 })
 
 // COMPUTED METHODS
@@ -181,6 +211,10 @@ const computedCountryCodes = computed(() => {
 useBackButton(10, () => {
   ionRouter.navigate('/login', 'forward', 'replace')
 })
+
+const setOpen = (state: boolean) => {
+  isOpen.value = state;
+};
 
 const getListCodes = () => {
   return {
@@ -223,13 +257,35 @@ const togglePasswordVisibility = () => {
   showPassword.value = !showPassword.value
   lockIcon.value = !lockIcon.value
 }
-
+ 
 const handleChange = (ev: any) => {
   selectedCountryCode.value = ev.detail.value
 }
 
-const submitForm = () => {
-  
+const submitForm = async () => {
+  const payload: Payload = {
+    user: {
+      email: email.value,
+      phone_number:  `${selectedCountryCode.value}${phone_number.value}`,
+      password: password.value
+    }
+   }
+
+  await signUp(payload)
+}
+
+const signUp = async (payload: Payload) => {
+  const response = await httpPost('/auth/sign_up', payload)
+    if (response.status === 201) {
+      message.value = response.data.message,
+      header.value = 'Registration completed successfully'
+      isOpen.value = true
+      ionRouter.replace('/confirm-code')
+    } else {
+      message.value = response.data.error
+      header.value = 'Error'
+      isOpen.value = true
+    }
 }
 </script>
 
@@ -246,7 +302,7 @@ ion-input.input-signup {
 }
 
 .title {
-  color: #5f5f5f;
+  color: #303030;
   font-size: 32px;
   margin-top: 5%;
   margin-bottom: 0;
