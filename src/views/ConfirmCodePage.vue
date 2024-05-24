@@ -155,10 +155,7 @@ const submitForm = async () => {
   }
 
   const payload = {
-    user: {
-      confirmation_code: inputs.join(''),
-      email: 'rodrigopacheco@email.com'
-    },
+    confirmation_code: inputs.join(''),
     params: {},
     method: 'PATCH'
   }
@@ -171,8 +168,10 @@ const confirmAccount = async (payload: Object) => {
 
   if (response.status === 200) {
     clearInputs
-    // authenticate user
-    // navigate to home
+    message.value = response.data.message
+    header.value = 'Welcome'
+    isOpen.value = true
+    ionRouter.replace('/home')
   } else if (response.status === 422) {
     message.value = response.data.message,
     header.value = 'Try again!'
