@@ -75,6 +75,7 @@
       <ion-row class="ion-padding-horizontal">
         <ion-col class="ion-padding-horizontal">
           <ion-button
+            @click=""
             id="btn_login_email"
             expand="full"
             shape="round"

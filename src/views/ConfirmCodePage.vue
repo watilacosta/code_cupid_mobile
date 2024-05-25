@@ -146,6 +146,12 @@ const clearInputs = () => {
   input4.value = ''
 }
 
+interface Options {
+  message: string,
+  header: string,
+  isOpen: boolean,
+}
+
 const setOpen = (state: boolean) => isOpen.value = state 
 
 const submitForm = async () => {
@@ -167,18 +173,32 @@ const confirmAccount = async (payload: Object) => {
   const response = await httpRequest('/auth/confirm_account', payload)
 
   if (response.status === 200) {
+    const options: Options = {
+      message: response.data.message,
+      header: 'Welcome',
+      isOpen: true
+    }
+
     clearInputs
-    message.value = response.data.message
-    header.value = 'Welcome'
-    isOpen.value = true
+    openModal(options)
     ionRouter.replace('/home')
   } else if (response.status === 422) {
-    message.value = response.data.message,
-    header.value = 'Try again!'
-    isOpen.value = true
+    const options: Options = {
+      message: response.data.message,
+      header: 'Try again!',
+      isOpen: true
+    }
+
+    openModal(options)
   } else {
     console.warn(response)
   }
+}
+
+const openModal = (options: Options) => {
+  message.value = options.message,
+  header.value = options.header,
+  isOpen.value = options.isOpen
 }
 </script>
 
