@@ -19,7 +19,7 @@
           <ion-col>
             <div class="ion-text-center">
               <ion-button
-                @click=""
+                @click="resendCode"
                 fill="clear"
                 color="medium"
                 shape="round"
@@ -90,6 +90,7 @@ import {
 } from '@ionic/vue'
 import { ref } from 'vue';
 import api from '@/utils/api'
+import store from '@/utils/db';
 
 const ionRouter = useIonRouter();
 const message = ref('')
@@ -148,6 +149,32 @@ const confirmAccount = async (payload: Object) => {
 
       openModal(options)
     })
+}
+
+const resendCode = async () => {
+  const user = await store.get('user')
+
+  api.post('auth/resend_code', {
+    user: {
+      email: user.email
+    }
+  })
+  .then((response) => {
+    const options: Options = {
+      message: 'Copie o código enviado para seu dispositivo e cole no campo de confirmação.',
+      header: response.data.message,
+      isOpen: true
+    }
+    openModal(options)
+  })
+  .catch((error) => {
+    const options: Options = {
+      message: 'Informa o erro ao administrador do sistema',
+      header: error.response.data.error,
+      isOpen: true
+    }
+    openModal(options)
+  })
 }
 
 const openModal = (options: Options) => {
