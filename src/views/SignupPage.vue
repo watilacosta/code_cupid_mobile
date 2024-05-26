@@ -174,7 +174,7 @@ import {
   phonePortraitOutline
 } from 'ionicons/icons';
 import { computed, ref } from 'vue';
-import { httpPost } from '@/utils/api'
+import api from '@/utils/api'
 
 const ionRouter = useIonRouter();
 const selectedCountryCode = ref("")
@@ -275,17 +275,19 @@ const submitForm = async () => {
 }
 
 const signUp = async (payload: Payload) => {
-  const response = await httpPost('/auth/sign_up', payload)
-    if (response.status === 201) {
+  await api.post('/auth/sign_up', payload)
+    .then((response) => {
+      console.log(response)
       message.value = response.data.message,
       header.value = 'Registration completed successfully'
       isOpen.value = true
       ionRouter.replace('/confirm-code')
-    } else {
-      message.value = response.data.error
+    }).catch((error) => {
+      console.log(error)
+      message.value = error
       header.value = 'Error'
       isOpen.value = true
-    }
+    })
 }
 </script>
 
@@ -330,3 +332,4 @@ ion-select {
   --ion-background-color: #a020f0;
 }
 </style>
+@/utils/apibkp

@@ -5,50 +5,16 @@
 
       <form @submit.prevent="submitForm">
         <ion-row class="ion-margin-horizontal">
-          <ion-col size="3">
+          <ion-col size="full">
             <ion-input
-              v-model="input1"
-              class="ion-padding"
+              v-model="inputCode"
               color="light"
               fill="outline"
-              :maxlength="1"
-              error-text="invalid code">
-            </ion-input>
-          </ion-col>
-          <ion-col size="3">
-            <ion-input
-              v-model="input2"
-              class="ion-padding"
-              color="light"
-              fill="outline"
-              :maxlength="1"
-              error-text="invalid code">
-
-            </ion-input>
-          </ion-col>
-          <ion-col size="3">
-            <ion-input
-              v-model="input3"
-              class="ion-padding"
-              color="light"
-              fill="outline"
-              :maxlength="1"
-              error-text="invalid code">
-
-            </ion-input>
-          </ion-col>
-          <ion-col size="3">
-            <ion-input
-              v-model="input4"
-              class="ion-padding"
-              color="light"
-              fill="outline"
-              :maxlength="1"
+              :maxlength="4"
               error-text="invalid code">
             </ion-input>
           </ion-col>
         </ion-row>
-
         <ion-row class="ion-padding-top"> 
           <ion-col>
             <div class="ion-text-center">
@@ -111,7 +77,6 @@
 </template>
 
 <script setup lang="ts">
-import { httpRequest } from '@/utils/api';
 import {
   IonPage,
   IonContent,
@@ -122,8 +87,9 @@ import {
   useIonRouter,
   IonButton,
   IonAlert
-  } from '@ionic/vue'
+} from '@ionic/vue'
 import { ref } from 'vue';
+import api from '@/utils/api'
 
 const ionRouter = useIonRouter();
 const message = ref('')
@@ -134,17 +100,9 @@ useBackButton(10, () => {
   ionRouter.navigate('/confirm-code', 'forward', 'replace')
 })
 
-let input1 = ref('')
-let input2 = ref('')
-let input3 = ref('')
-let input4 = ref('')
+let inputCode = ref('')
 
-const clearInputs = () => {
-  input1.value = ''
-  input2.value = ''
-  input3.value = ''
-  input4.value = ''
-}
+const clearInputs = () => inputCode.value = ''
 
 interface Options {
   message: string,
@@ -155,13 +113,12 @@ interface Options {
 const setOpen = (state: boolean) => isOpen.value = state 
 
 const submitForm = async () => {
-  const inputs = [input1.value, input2.value, input3.value, input4.value]
-  if (inputs.some(value => value === '')) {
+  if (inputCode.value === '') {
     return;
   }
 
   const payload = {
-    confirmation_code: inputs.join(''),
+    confirmation_code: inputCode.value,
     params: {},
     method: 'PATCH'
   }
@@ -170,9 +127,8 @@ const submitForm = async () => {
 }
 
 const confirmAccount = async (payload: Object) => {
-  const response = await httpRequest('/auth/confirm_account', payload)
-
-  if (response.status === 200) {
+  await api.patch('/auth/confirm_account', payload)
+  .then((response) =>{
     const options: Options = {
       message: response.data.message,
       header: 'Welcome',
@@ -182,17 +138,16 @@ const confirmAccount = async (payload: Object) => {
     clearInputs
     openModal(options)
     ionRouter.replace('/home')
-  } else if (response.status === 422) {
+  })
+  .catch((error) => {
     const options: Options = {
-      message: response.data.message,
+      message: error,
       header: 'Try again!',
       isOpen: true
     }
 
     openModal(options)
-  } else {
-    console.warn(response)
-  }
+  })
 }
 
 const openModal = (options: Options) => {
@@ -216,7 +171,6 @@ ion-content {
 
 ion-input {
   font-size: xx-large;
-  font-size: 50px;
 
   --background: #f7f7f7;
   --color: #353535;
@@ -226,4 +180,4 @@ ion-input {
 .btn-confirm {
   margin-top: 30%;
 }
-</style>
+</style>@/utils/apibkp
