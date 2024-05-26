@@ -277,14 +277,12 @@ const submitForm = async () => {
 const signUp = async (payload: Payload) => {
   await api.post('/auth/sign_up', payload)
     .then((response) => {
-      console.log(response)
       message.value = response.data.message,
       header.value = 'Registration completed successfully'
       isOpen.value = true
       ionRouter.replace('/confirm-code')
     }).catch((error) => {
-      console.log(error)
-      message.value = error
+      message.value = error.response.data.error
       header.value = 'Error'
       isOpen.value = true
     })

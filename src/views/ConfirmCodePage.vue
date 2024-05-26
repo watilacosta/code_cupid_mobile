@@ -128,26 +128,26 @@ const submitForm = async () => {
 
 const confirmAccount = async (payload: Object) => {
   await api.patch('/auth/confirm_account', payload)
-  .then((response) =>{
-    const options: Options = {
-      message: response.data.message,
-      header: 'Welcome',
-      isOpen: true
-    }
+    .then((response) =>{
+      const options: Options = {
+        message: response.data.message,
+        header: 'Welcome',
+        isOpen: true
+      }
 
-    clearInputs
-    openModal(options)
-    ionRouter.replace('/home')
-  })
-  .catch((error) => {
-    const options: Options = {
-      message: error,
-      header: 'Try again!',
-      isOpen: true
-    }
+      clearInputs
+      openModal(options)
+      ionRouter.replace('/home')
+    })
+    .catch((error) => {
+      const options: Options = {
+        message: error.response.data.message,
+        header: 'Try again!',
+        isOpen: true
+      }
 
-    openModal(options)
-  })
+      openModal(options)
+    })
 }
 
 const openModal = (options: Options) => {
