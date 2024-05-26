@@ -285,6 +285,9 @@ const signUp = async (payload: Payload) => {
       message.value = error.response.data.error
       header.value = 'Error'
       isOpen.value = true
+    }).finally(() => {
+      computedCountryCodes
+      selectedCountryCode.value = computedCountryCodes.value[0].dialingcode
     })
 }
 </script>

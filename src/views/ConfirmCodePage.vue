@@ -170,11 +170,12 @@ ion-content {
 }
 
 ion-input {
-  font-size: xx-large;
-
   --background: #f7f7f7;
   --color: #353535;
   --border-width: 0;
+  text-align: center;
+  font-size: xx-large;
+  letter-spacing: 1.8em;
 }
 
 .btn-confirm {
