@@ -50,6 +50,7 @@
       <ion-row class="ion-padding-horizontal">
         <ion-col class="ion-padding-horizontal">
           <ion-button
+            @click="router.push('/login-with-email')"
             id="btn_login_email"
             expand="full"
             shape="round"

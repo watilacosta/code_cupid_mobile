@@ -14,6 +14,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/LoginPage.vue')
   },
   {
+    path: '/login-with-email',
+    name: 'LoginWithEmail',
+    component: () => import('@/views/LoginWithEmailPage.vue')
+  },
+  {
     path: '/sign-up',
     name: 'Signup',
     component: () => import('@/views/SignupPage.vue')
@@ -33,18 +38,22 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: 'home',
+        name: 'Home',
         component: () => import('@/views/HomePage.vue')
       },
       {
         path: 'like',
+        name: 'Like',
         component: () => import('@/views/LikePage.vue')
       },
       {
         path: 'message',
+        name: 'Message',
         component: () => import('@/views/MessagePage.vue')
       },
       {
         path: 'profile',
+        name: 'Profile',
         component: () => import('@/views/ProfilePage.vue')
       }
     ]
@@ -58,22 +67,22 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
   const authStore = useAuthStore()
+  const notAuthenticated = !authStore.isAuthenticated
+  const authRoutes = ['Login', 'Signup', 'ConfirmCode','LoginWithEmail']
 
-  if (!authStore.isAuthenticated 
-    && to.name !== "Login"
-    && to.name !== "Signup"
-    && to.name !== "ConfirmCode") {
-    next({ name: "Login" })
-  } else if (authStore.isAuthenticated && (
-    to.name === "Login"
-    || to.name === "Signup"
-    || to.name === "ConfirmCode")
-  ) {
-    next({ name: "" })
+  if (typeof to.name === 'string') {
+    console.log(`Não autenticado: ${notAuthenticated}`)
+    if (notAuthenticated && !authRoutes.includes(to.name)) {
+      next({ name: "Login" })
+    } else if (authStore.isAuthenticated && authRoutes.includes(to.name)) {
+      next({ name: "Home" })
+    } else {
+      next()
+    }
   } else {
-    next()
+    console.warn(to.name)
+    next({ name: 'Login' })
   }
 })
-
 
 export default router

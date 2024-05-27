@@ -175,7 +175,7 @@ import {
 } from 'ionicons/icons';
 import { computed, ref } from 'vue';
 import api from '@/utils/api'
-import store from '@/utils/db';
+import storage from '@/utils/db';
 
 const ionRouter = useIonRouter();
 const selectedCountryCode = ref("")
@@ -278,7 +278,7 @@ const submitForm = async () => {
 const signUp = async (payload: Payload) => {
   await api.post('/auth/sign_up', payload)
     .then((response) => {
-      store.set('user', payload.user)
+      storage.set('user', payload.user)
       message.value = response.data.message,
       header.value = 'Registration completed successfully'
       isOpen.value = true
@@ -335,4 +335,3 @@ ion-select {
   --ion-background-color: #a020f0;
 }
 </style>
-@/utils/apibkp

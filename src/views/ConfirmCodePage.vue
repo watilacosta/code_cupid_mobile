@@ -114,13 +114,6 @@ interface Options {
   isOpen: boolean,
 }
 
-interface User {
-  user: {
-    email: string,
-    password: string
-  }
-}
-
 const setOpen = (state: boolean) => isOpen.value = state 
 
 const submitForm = async () => {
@@ -145,7 +138,7 @@ const confirmAccount = async (payload: Object) => {
         header: 'Welcome',
         isOpen: true
       }
-      
+
       updateAuthStore(response.data.token)
       clearInputs
       openModal(options)
@@ -197,7 +190,6 @@ const openModal = (options: Options) => {
 const updateAuthStore = (token: string) => {
   authStore.setAuthToken(token);
   authStore.authenticate();
-  console.log('Authenticated')
 };
 </script>
 

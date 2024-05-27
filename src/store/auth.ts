@@ -20,13 +20,10 @@ export const useAuthStore = defineStore("auth", {
 			this.authToken = token
 		},
 
-		reset() {
+		logout() {
 			this.authToken = ""
 			this.userIsAuthenticated = false
 		},
-
-		persist: {
-			storage: sessionStorage,
-		}
-	}
+	},
+	persist: true
 })
