@@ -1,9 +1,14 @@
 import { Drivers, Storage } from '@ionic/storage';
 
-const store = new Storage({
+const storage = new Storage({
   name: '__CodeCupidDB',
   driverOrder: [Drivers.IndexedDB, Drivers.LocalStorage]
 });
-await store.create();
 
-export default store
+async function initializeStore() {
+  await storage.create()
+}
+
+initializeStore()
+
+export default storage

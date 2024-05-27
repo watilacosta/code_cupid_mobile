@@ -90,12 +90,15 @@ import {
 } from '@ionic/vue'
 import { ref } from 'vue';
 import api from '@/utils/api'
-import store from '@/utils/db';
+import storage from '@/utils/db';
+import { useAuthStore } from '@/store/auth'
 
 const ionRouter = useIonRouter();
 const message = ref('')
 const header = ref('')
 const isOpen = ref(false)
+
+const authStore = useAuthStore()
 
 useBackButton(10, () => {
   ionRouter.navigate('/confirm-code', 'forward', 'replace')
@@ -109,6 +112,13 @@ interface Options {
   message: string,
   header: string,
   isOpen: boolean,
+}
+
+interface User {
+  user: {
+    email: string,
+    password: string
+  }
 }
 
 const setOpen = (state: boolean) => isOpen.value = state 
@@ -135,10 +145,11 @@ const confirmAccount = async (payload: Object) => {
         header: 'Welcome',
         isOpen: true
       }
-
+      
+      updateAuthStore(response.data.token)
       clearInputs
       openModal(options)
-      ionRouter.replace('/home')
+      ionRouter.push('/')
     })
     .catch((error) => {
       const options: Options = {
@@ -152,7 +163,7 @@ const confirmAccount = async (payload: Object) => {
 }
 
 const resendCode = async () => {
-  const user = await store.get('user')
+  const user = await storage.get('user')
 
   api.post('auth/resend_code', {
     user: {
@@ -182,6 +193,12 @@ const openModal = (options: Options) => {
   header.value = options.header,
   isOpen.value = options.isOpen
 }
+
+const updateAuthStore = (token: string) => {
+  authStore.setAuthToken(token);
+  authStore.authenticate();
+  console.log('Authenticated')
+};
 </script>
 
 <style scoped>

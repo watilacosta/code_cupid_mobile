@@ -50,32 +50,6 @@
       <ion-row class="ion-padding-horizontal">
         <ion-col class="ion-padding-horizontal">
           <ion-button
-            id="btn_login_facebook"
-            expand="full"
-            shape="round"
-            size="large"
-            color="light"
-            mode="md">
-            <ion-grid :fixed="true">
-              <ion-row class="ion-align-items-center ion-justify-content-center">
-                <ion-col size="2">
-                  <ion-img
-                    src="resources/icons8-facebook-48.png"
-                    alt="logo google"
-                    class="ion-margin-horizontal btn-img">
-                  </ion-img>
-                </ion-col>
-                <ion-col>Login with Facebook</ion-col>
-              </ion-row>
-            </ion-grid>
-          </ion-button>
-        </ion-col>
-      </ion-row>
-
-      <ion-row class="ion-padding-horizontal">
-        <ion-col class="ion-padding-horizontal">
-          <ion-button
-            @click=""
             id="btn_login_email"
             expand="full"
             shape="round"
@@ -99,7 +73,7 @@
       </ion-row>
 
       <ion-row> 
-        <ion-col class="ion-margin-top">
+        <ion-col>
           <div class="ion-text-center">
             <ion-button
               @click="() => router.push('/sign-up')"
