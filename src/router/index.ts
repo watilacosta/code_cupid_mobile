@@ -71,7 +71,6 @@ router.beforeEach(async (to, from, next) => {
   const authRoutes = ['Login', 'Signup', 'ConfirmCode','LoginWithEmail']
 
   if (typeof to.name === 'string') {
-    console.log(`Não autenticado: ${notAuthenticated}`)
     if (notAuthenticated && !authRoutes.includes(to.name)) {
       next({ name: "Login" })
     } else if (authStore.isAuthenticated && authRoutes.includes(to.name)) {

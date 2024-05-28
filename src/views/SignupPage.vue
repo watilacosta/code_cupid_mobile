@@ -20,7 +20,7 @@
 
       <ion-row>
         <ion-col>
-          <h1 class="title">Register your account</h1>
+          <h1 class="title">Create Account</h1>
           <h2 class="subtitle">Hello user, meet amazing people.</h2>
         </ion-col>
       </ion-row>
@@ -139,7 +139,7 @@
               size="large"
               mode="md"
             >
-              Login
+              Enter to your account
             </ion-button>
           </div>
         </ion-col>

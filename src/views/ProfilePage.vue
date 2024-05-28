@@ -26,19 +26,18 @@ import {
   IonToolbar,
   IonTitle,
   IonContent,
-  IonButton
+  IonButton,
+useIonRouter
 } from '@ionic/vue';
 import ExploreContainer from '@/components/ExploreContainer.vue';
 import { useAuthStore } from '@/store/auth';
-import router from '@/router';
 
 const authStore = useAuthStore()
+const iontRouter = useIonRouter()
 
 const logout = () => {
   authStore.logout()
-  router.push('/login')
-
-  console.log(`Token: ${authStore.authToken}, Autenticado: ${authStore.isAuthenticated}`)
+  iontRouter.replace('/login')
 }
 </script>
   

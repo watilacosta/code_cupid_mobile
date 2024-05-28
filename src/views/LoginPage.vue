@@ -81,7 +81,7 @@
               id="btn-signup"
               fill="clear"
               color="light">
-              Sign-up
+              Register
             </ion-button>
           </div>
         </ion-col>
