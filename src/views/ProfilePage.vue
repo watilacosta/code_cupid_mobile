@@ -3,7 +3,7 @@
       <ion-content :fullscreen="true" color="light">
         <ion-card color="tertiary">
           <ion-card-content>
-            <ion-row class="ion-justify-content-center ion-align-items-center ion-margin-vertical">
+            <ion-row class="ion-justify-content-center ion-align-items-center ion-margin-bottom">
               <h1 class="title">Profile</h1>
             </ion-row>
             <ion-row class="ion-justify-content-center ion-align-items-center">
@@ -24,7 +24,7 @@
             </ion-row>
             <ion-row class="ion-justify-content-center ion-align-items-center ion-margin-vertical">
               <ion-text color="light" mode="md">
-                <h3>{{ user?.username ? user?.username : user?.email}}, {{ user?.age }}</h3>
+                <h2>{{ user?.username ? user?.username : user?.email}}, {{ user?.age }}</h2>
               </ion-text>
             </ion-row>
           </ion-card-content>
@@ -333,7 +333,7 @@ ion-card {
 }
 
 ion-thumbnail {
- --size: 122px;
+ --size: 150px;
  --border-radius: 90px;
 }
 
