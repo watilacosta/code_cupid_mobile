@@ -89,6 +89,7 @@
 <script setup lang="ts">
 import router from '@/router';
 import { useAuthStore } from '@/store/auth';
+import { useUserStore } from '@/store/user';
 import api from '@/utils/api';
 import {
   IonPage,
@@ -109,6 +110,7 @@ let email = ref('')
 let password = ref('')
 
 const authStore = useAuthStore()
+const userStore = useUserStore()
 const ionRouter = useIonRouter()
 
 interface LoginPayload  {
@@ -134,6 +136,7 @@ const login = async (payload: LoginPayload) => {
     .then((response) => {
       authStore.setAuthToken(response.data.token)
       authStore.authenticate()
+      userStore.setCurrentUser(response.data.user)
       ionRouter.replace('/')
     })
     .catch((error) => {
