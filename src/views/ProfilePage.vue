@@ -43,7 +43,7 @@
           </ion-row>
         </ion-grid>
 
-        <form class="ion-padding-horizontal">
+        <form @submit.prevent="updateProfile" class="ion-padding-horizontal">
           <ion-row>
             <ion-col>
               <ion-input
@@ -53,7 +53,7 @@
                 type="text"
                 label-placement="floating"
                 :value="user?.username"
-                :disabled="true"
+                :disabled="accountDisable"
               />
             </ion-col>
           </ion-row>
@@ -67,7 +67,7 @@
                 type="text"
                 label-placement="floating"
                 :value="user?.phone_number"
-                :disabled="true"
+                :disabled="accountDisable"
               />
             </ion-col>
           </ion-row>
@@ -80,7 +80,7 @@
                 class="ion-margin-bottom"
                 label-placement="floating"
                 :value="computedDate"
-                :disabled="true"
+                :disabled="accountDisable"
               />
             </ion-col>
           </ion-row>
@@ -92,10 +92,21 @@
                 label="Email"
                 label-placement="floating"
                 :value="user?.email"
-                :disabled="true"
+                :disabled="accountDisable"
               />
             </ion-col>
           </ion-row>
+          <ion-button
+            fill="solid"
+            expand="block"
+            shape="round"
+            v-show="btnAccountShow"
+            :strong="true"
+            type="submit"
+            class="ion-color-primary ion-margin-top"
+          >
+            Save
+          </ion-button>
         </form>
 
         <ion-grid class="ion-padding-horizontal ">
@@ -263,22 +274,33 @@ import moment from 'moment';
 
 const authStore = useAuthStore()
 const userStore = useUserStore()
-const iontRouter = useIonRouter()
+const ionRouter = useIonRouter()
 
-let user = ref({} as User | null)
-let minAgeRange = ref(18)
-let maxAgeRange = ref(50)
-let maxDistance = ref(200)
+const user = ref({} as User | null)
+const minAgeRange = ref(18)
+const maxAgeRange = ref(50)
+const maxDistance = ref(200)
+const accountDisable = ref(true)
+const btnAccountShow = ref(false)
 
 const logout = () => {
   authStore.logout()
-  iontRouter.replace('/login')
+  ionRouter.replace('/login')
 }
 
 const computedDate = computed(() => moment(user.value?.birthdate).format('DD/MM/YYYY'))
 
 const fetchCurrentUser = () => user.value = userStore.getCurrentUser
-const editAccount      = (() => console.log('Edit Account'))
+
+const editAccount = (() => {
+  accountDisable.value = !accountDisable.value
+  btnAccountShow.value = !btnAccountShow.value
+})
+
+const updateProfile = async () => {
+
+}
+
 const deleteAccount    = (() => console.log('delete account...'))
 
 const onAgeRangeChange = ({ detail }: any) => {
@@ -293,8 +315,6 @@ const onDistanceChange = ({ detail }: any) => {
 onIonViewWillEnter(() => {
   fetchCurrentUser()
 })
-
-
 </script>
   
 <style scoped>
