@@ -106,8 +106,8 @@ import {
 import { lockClosed, mailSharp } from 'ionicons/icons';
 import { ref } from 'vue';
 
-let email = ref('')
-let password = ref('')
+const email = ref('')
+const password = ref('')
 
 const authStore = useAuthStore()
 const userStore = useUserStore()

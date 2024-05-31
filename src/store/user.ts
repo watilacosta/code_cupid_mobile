@@ -4,7 +4,7 @@ import { defineStore } from "pinia";
 export const useUserStore = defineStore('user', {
   state: () => {
     return {
-      currentUser: null as User | null,
+      currentUser: {} as User,
     }
   },
 

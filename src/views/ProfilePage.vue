@@ -1,35 +1,7 @@
 <template>
     <ion-page>
       <ion-content :fullscreen="true" color="light">
-        <ion-card color="tertiary">
-          <ion-card-content>
-            <ion-row class="ion-justify-content-center ion-align-items-center ion-margin-bottom">
-              <h1 class="title">Profile</h1>
-            </ion-row>
-            <ion-row class="ion-justify-content-center ion-align-items-center">
-              <ion-thumbnail>
-                <ion-img 
-                  src="resources/logo.png"
-                  alt="logo code cupid"
-                  class="ion-margin-vertical"
-                >
-                </ion-img>
-              </ion-thumbnail>
-
-              <ion-fab horizontal="end">
-                <ion-fab-button size="small" color="light">
-                  <ion-icon :icon="pencilSharp" color="primary"></ion-icon>
-                </ion-fab-button>
-              </ion-fab>
-            </ion-row>
-            <ion-row class="ion-justify-content-center ion-align-items-center ion-margin-vertical">
-              <ion-text color="light" mode="md">
-                <h2>{{ user?.username ? user?.username : user?.email}}, {{ user?.age }}</h2>
-              </ion-text>
-            </ion-row>
-          </ion-card-content>
-        </ion-card>
-
+        <ProfileTopCard :user="user"/>
         <ion-grid class="ion-padding-horizontal ">
           <ion-row class="ion-justify-content-between ion-align-items-center">
             <ion-col size="6">
@@ -52,7 +24,7 @@
                 class="ion-margin-bottom"
                 type="text"
                 label-placement="floating"
-                :value="user?.username"
+                v-model="user.username"
                 :disabled="accountDisable"
               />
             </ion-col>
@@ -65,8 +37,9 @@
                 label="Phone number"
                 class="ion-margin-bottom"
                 type="text"
+                mode="md"
                 label-placement="floating"
-                :value="user?.phone_number"
+                v-model="user.phone_number"
                 :disabled="accountDisable"
               />
             </ion-col>
@@ -79,7 +52,7 @@
                 label="Birthdate"
                 class="ion-margin-bottom"
                 label-placement="floating"
-                :value="computedDate"
+                v-model="computedBirthdate"
                 :disabled="accountDisable"
               />
             </ion-col>
@@ -91,7 +64,7 @@
                 fill="outline"
                 label="Email"
                 label-placement="floating"
-                :value="user?.email"
+                v-model="user.email"
                 :disabled="accountDisable"
               />
             </ion-col>
@@ -248,35 +221,31 @@ import {
   IonPage,
   IonContent,
   IonButton,
-  useIonRouter,
-  IonCard,
-  IonCardContent,
-  IonThumbnail,
-  IonImg,
   IonRow,
   IonCol,
   IonGrid,
-  IonFab,
-  IonFabButton,
-  IonIcon,
   IonText,
   IonInput,
   IonRange,
+  useIonRouter,
   onIonViewWillEnter,
 } from '@ionic/vue';
 
 import { useAuthStore } from '@/store/auth';
-import { pencilSharp } from 'ionicons/icons';
 import { useUserStore } from '@/store/user';
 import { User } from '@/models/User';
 import { computed, ref } from 'vue';
 import moment from 'moment';
+import ProfileTopCard from "@/components/ProfileTopCard.vue";
+import UserService from "@/services/UserService";
 
 const authStore = useAuthStore()
 const userStore = useUserStore()
 const ionRouter = useIonRouter()
 
-const user = ref({} as User | null)
+const service = UserService
+
+const user = ref({} as User)
 const minAgeRange = ref(18)
 const maxAgeRange = ref(50)
 const maxDistance = ref(200)
@@ -288,7 +257,7 @@ const logout = () => {
   ionRouter.replace('/login')
 }
 
-const computedDate = computed(() => moment(user.value?.birthdate).format('DD/MM/YYYY'))
+const computedBirthdate = computed(() => moment(user.value.birthdate).format('DD/MM/YYYY'))
 
 const fetchCurrentUser = () => user.value = userStore.getCurrentUser
 
@@ -298,10 +267,15 @@ const editAccount = (() => {
 })
 
 const updateProfile = async () => {
-
+  await service.update(user.value as User)
+      .then((response) => {
+        user.value = response.data.user
+      }).catch((error) => {
+        console.log('ERROR', error)
+      })
 }
 
-const deleteAccount    = (() => console.log('delete account...'))
+const deleteAccount = (() => console.log('delete account...'))
 
 const onAgeRangeChange = ({ detail }: any) => {
   minAgeRange.value = detail.value.lower
@@ -318,35 +292,6 @@ onIonViewWillEnter(() => {
 </script>
   
 <style scoped>
-ion-card {
-  border-bottom-left-radius: 200px 25px;
-  border-bottom-right-radius: 200px 25px;
-
-  margin: 0;
-  min-height: 40%;
-  --ion-background-color: #a020f0;
-  --ion-background-color-rgb: 160, 32, 240;
-
-  background: radial-gradient(
-    rgba(188, 123, 228, 1), rgba(160, 32, 240, 1)
-  );
-}
-
-ion-thumbnail {
- --size: 150px;
- --border-radius: 90px;
-}
-
-.title {
-  font-size: 26px;
-  margin-top: 10%;
-}
-
-ion-fab {
-  margin-right: 30%;
-  margin-bottom: 10%;
-}
-
 ion-text {
   margin-top: 3%;
 }

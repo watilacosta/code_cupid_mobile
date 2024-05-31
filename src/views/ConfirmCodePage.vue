@@ -104,7 +104,7 @@ useBackButton(10, () => {
   ionRouter.navigate('/confirm-code', 'forward', 'replace')
 })
 
-let inputCode = ref('')
+const inputCode = ref('')
 
 const clearInputs = () => inputCode.value = ''
 
@@ -140,7 +140,7 @@ const confirmAccount = async (payload: Object) => {
       }
 
       updateAuthStore(response.data.token)
-      clearInputs
+      clearInputs()
       openModal(options)
       ionRouter.push('/')
     })
