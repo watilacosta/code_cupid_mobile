@@ -29,6 +29,11 @@ const routes: Array<RouteRecordRaw> = [
     component: () => import('@/views/ConfirmCodePage.vue')
   },
   {
+    path: '/manage-subscription',
+    name: 'ManageSubscription',
+    component: () => import('@/views/ManageSubscriptionPage.vue')
+  },
+  {
     path: '/tabs/',
     component: TabsPage,
     children: [

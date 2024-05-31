@@ -14,7 +14,6 @@
             </ion-col>
           </ion-row>
         </ion-grid>
-
         <form @submit.prevent="updateProfile" class="ion-padding-horizontal">
           <ion-row>
             <ion-col>
@@ -29,7 +28,6 @@
               />
             </ion-col>
           </ion-row>
-
           <ion-row>
             <ion-col>
               <ion-input
@@ -44,7 +42,6 @@
               />
             </ion-col>
           </ion-row>
-
           <ion-row>
             <ion-col>
               <ion-input
@@ -57,7 +54,6 @@
               />
             </ion-col>
           </ion-row>
-
           <ion-row>
             <ion-col>
               <ion-input
@@ -82,117 +78,9 @@
           </ion-button>
         </form>
 
-        <ion-grid class="ion-padding-horizontal ">
-          <ion-row class="ion-justify-content-between ion-align-items-center">
-            <ion-col size="6">
-              <ion-text color="dark">
-                <h3>Plan Settings</h3>
-              </ion-text>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
+        <PlanSettings />
+        <DiscoverySettings />
 
-        <form class="ion-padding-horizontal">
-          <ion-row>
-            <ion-col>
-              <ion-input
-                fill="outline"
-                label="Current Plan"
-                type="text"
-                label-placement="floating"
-                value="Free"
-                :disabled="true"
-              />
-            </ion-col>
-          </ion-row>
-        </form>
-
-        <ion-grid class="ion-padding-horizontal ">
-          <ion-row class="ion-justify-content-between ion-align-items-center">
-            <ion-col size="12">
-              <ion-text color="dark">
-                <h3>Discovery Settings</h3>
-              </ion-text>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-
-        <form class="ion-padding-horizontal">
-          <ion-row>
-            <ion-col>
-              <ion-input
-                fill="outline"
-                label="Location"
-                class="ion-margin-bottom"
-                type="text"
-                label-placement="floating"
-                value="Brasil"
-                :disabled="true"
-              />
-            </ion-col>
-          </ion-row>
-
-          <ion-row>
-            <ion-col>
-              <ion-input
-                fill="outline"
-                label="Language"
-                class="ion-margin-bottom"
-                type="text"
-                label-placement="floating"
-                value="Português BR"
-                :disabled="true"
-              />
-            </ion-col>
-          </ion-row>
-          
-          <ion-row>
-            <ion-col>
-              <ion-input
-                fill="outline"
-                label="Show Me"
-                class="ion-margin-bottom"
-                type="text"
-                label-placement="floating"
-                value="Women"
-                :disabled="true"
-              />
-            </ion-col>
-          </ion-row>
-
-          <ion-row>
-            <ion-col>
-              <ion-range
-                @ionChange="onAgeRangeChange"
-                :dual-knobs="true"
-                :value="{ lower: minAgeRange, upper: maxAgeRange }"
-                :min="18"
-                :max="100"
-                :pin="true"
-                class="ion-margin-horizontal"
-                aria-label="Age Range"
-                label-placement="stacked"
-                label="Age Range"
-                mode="md"
-              />
-            </ion-col>
-          </ion-row>
-
-          <ion-row>
-            <ion-col>
-              <ion-range
-                @ionChange="onDistanceChange"
-                :min="1"
-                :max="200"
-                :pin="true"
-                aria-label="Max Distance"
-                label-placement="stacked"
-                label="Maximum distance (Km)"
-                class="ion-margin-horizontal"
-              />
-            </ion-col>
-          </ion-row>
-        </form>
         <ion-button
           @click="logout"
           fill="outline"
@@ -226,18 +114,17 @@
   
 <script setup lang="ts">
 import {
-  IonPage,
-  IonContent,
   IonButton,
-  IonRow,
   IonCol,
+  IonContent,
   IonGrid,
-  IonText,
   IonInput,
-  IonRange,
+  IonPage,
+  IonRow,
+  IonText,
   IonToast,
-  useIonRouter,
   onIonViewWillEnter,
+  useIonRouter,
 } from '@ionic/vue';
 import { notificationsOutline } from "ionicons/icons";
 
@@ -248,6 +135,8 @@ import { computed, ref } from 'vue';
 import moment from 'moment';
 import ProfileTopCard from "@/components/ProfileTopCard.vue";
 import UserService from "@/services/UserService";
+import PlanSettings from '@/components/PlanSettings.vue';
+import DiscoverySettings from "@/components/DiscoverySettings.vue";
 
 const authStore = useAuthStore()
 const userStore = useUserStore()
@@ -256,9 +145,6 @@ const ionRouter = useIonRouter()
 const service = UserService
 
 const user = ref({} as User)
-const minAgeRange = ref(18)
-const maxAgeRange = ref(50)
-const maxDistance = ref(200)
 const accountDisable = ref(true)
 const btnAccountShow = ref(false)
 const isOpen = ref(false)
@@ -285,25 +171,16 @@ const toggleInputsEnabled = (() => {
 
 const updateProfile = async () => {
   await service.update(user.value as User)
-      .then((response) => {
-        user.value = response.data.user
-        isOpen.value = true
-        toggleInputsEnabled()
-      }).catch((error) => {
-        console.log('ERROR', error)
-      })
+    .then((response) => {
+      user.value = response.data.user
+      isOpen.value = true
+      toggleInputsEnabled()
+    }).catch((error) => {
+      console.log('ERROR', error)
+    })
 }
 
 const deleteAccount = (() => console.log('delete account...'))
-
-const onAgeRangeChange = ({ detail }: any) => {
-  minAgeRange.value = detail.value.lower
-  maxAgeRange.value = detail.value.upper
-};
-
-const onDistanceChange = ({ detail }: any) => {
-  maxDistance.value = detail.value
-}
 
 onIonViewWillEnter(() => {
   fetchCurrentUser()

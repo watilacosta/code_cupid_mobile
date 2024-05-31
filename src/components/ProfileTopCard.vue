@@ -76,4 +76,8 @@ ion-fab {
   margin-right: 25%;
   margin-bottom: 15%;
 }
+
+ion-text {
+  margin-top: 5%;
+}
 </style>
