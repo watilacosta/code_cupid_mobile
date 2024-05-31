@@ -193,7 +193,6 @@
             </ion-col>
           </ion-row>
         </form>
-
         <ion-button
           @click="logout"
           fill="outline"
@@ -212,6 +211,15 @@
         >
           Delete Account
         </ion-button>
+
+        <ion-toast
+          :is-open="isOpen"
+          message="Your information has been updated successfully."
+          :duration="4000"
+          position="top"
+          :icon="notificationsOutline"
+          @didDismiss="setOpen(false)"
+        />
       </ion-content>
     </ion-page>
   </template>
@@ -227,9 +235,11 @@ import {
   IonText,
   IonInput,
   IonRange,
+  IonToast,
   useIonRouter,
   onIonViewWillEnter,
 } from '@ionic/vue';
+import { notificationsOutline } from "ionicons/icons";
 
 import { useAuthStore } from '@/store/auth';
 import { useUserStore } from '@/store/user';
@@ -251,6 +261,9 @@ const maxAgeRange = ref(50)
 const maxDistance = ref(200)
 const accountDisable = ref(true)
 const btnAccountShow = ref(false)
+const isOpen = ref(false)
+
+const setOpen = (state: boolean) => isOpen.value = state
 
 const logout = () => {
   authStore.logout()
@@ -262,6 +275,10 @@ const computedBirthdate = computed(() => moment(user.value.birthdate).format('DD
 const fetchCurrentUser = () => user.value = userStore.getCurrentUser
 
 const editAccount = (() => {
+  toggleInputsEnabled()
+})
+
+const toggleInputsEnabled = (() => {
   accountDisable.value = !accountDisable.value
   btnAccountShow.value = !btnAccountShow.value
 })
@@ -270,6 +287,8 @@ const updateProfile = async () => {
   await service.update(user.value as User)
       .then((response) => {
         user.value = response.data.user
+        isOpen.value = true
+        toggleInputsEnabled()
       }).catch((error) => {
         console.log('ERROR', error)
       })
