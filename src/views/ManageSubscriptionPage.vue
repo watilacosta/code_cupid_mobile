@@ -11,6 +11,7 @@
       >
         <ion-icon slot="icon-only" :icon="arrowBack"></ion-icon>
       </ion-button>
+      <CurrentPlaneCard />
     </ion-content>
   </ion-page>
 </template>
@@ -23,8 +24,9 @@ import {
   IonButton,
   IonIcon,
   IonContent,
-  IonPage
+  IonPage,
 } from "@ionic/vue";
+import CurrentPlaneCard from "@/components/CurrentPlaneCard.vue";
 </script>
 
 <style scoped>
