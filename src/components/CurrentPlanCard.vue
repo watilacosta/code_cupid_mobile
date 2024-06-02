@@ -4,7 +4,7 @@
       <ion-grid class="ion-no-padding ion-no-margin ion-margin-top">
         <ion-row class="ion-justify-content-between ion-align-items-center">
           <ion-col>
-            <ion-card-title>Current Plane</ion-card-title>
+            <ion-card-title>Current Plan</ion-card-title>
           </ion-col>
           <ion-col size="auto">
             Free
@@ -38,7 +38,6 @@
 </template>
 
 <script setup lang="ts">
-
 import {
   IonCol,
   IonRow,
@@ -49,6 +48,11 @@ import {
   IonCardSubtitle,
   IonButton
 } from "@ionic/vue";
+import {Subscription} from "@/models/Subscription";
+
+const props = defineProps({
+  subscription: Subscription
+})
 </script>
 
 <style scoped>

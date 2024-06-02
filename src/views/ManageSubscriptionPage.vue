@@ -11,7 +11,7 @@
       >
         <ion-icon slot="icon-only" :icon="arrowBack"></ion-icon>
       </ion-button>
-      <CurrentPlaneCard />
+      <CurrentPlaneCard :subscription="subscription"/>
     </ion-content>
   </ion-page>
 </template>
@@ -25,8 +25,21 @@ import {
   IonIcon,
   IonContent,
   IonPage,
+  onIonViewWillEnter,
 } from "@ionic/vue";
-import CurrentPlaneCard from "@/components/CurrentPlaneCard.vue";
+import CurrentPlaneCard from "@/components/CurrentPlanCard.vue";
+import {ref} from "vue";
+import {Subscription} from "cypress/types/net-stubbing";
+
+const subscription = ref({} as Subscription)
+
+const showCurrentSubscription = (() => {
+
+})
+
+onIonViewWillEnter(() => {
+  showCurrentSubscription()
+})
 </script>
 
 <style scoped>
