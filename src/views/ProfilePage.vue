@@ -50,6 +50,7 @@
                 fill="outline"
                 label="Birthdate"
                 class="ion-margin-bottom"
+                type="date"
                 id="birthdate"
                 label-placement="floating"
                 v-model="computedBirthdate"

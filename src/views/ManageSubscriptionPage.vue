@@ -62,7 +62,8 @@ const showCurrentSubscription = async () => {
   await api.get('/subscriptions/active', { params: payload })
     .then((response) => {
       parseDataToSubscription(response.data)
-    }).catch((error) => {
+    })
+    .catch((error) => {
       console.log(error);
     })
 }
