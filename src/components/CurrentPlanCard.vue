@@ -46,7 +46,6 @@ import {
   IonCardSubtitle,
   IonButton
 } from "@ionic/vue";
-import { Subscription } from "@/models/Subscription";
 
 const props = defineProps({ subscription: Object })
 </script>

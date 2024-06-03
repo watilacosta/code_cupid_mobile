@@ -12,6 +12,7 @@
         <ion-icon slot="icon-only" :icon="arrowBack"></ion-icon>
       </ion-button>
       <CurrentPlaneCard :subscription="subscription" />
+      <PlansCard />
     </ion-content>
   </ion-page>
 </template>
@@ -32,6 +33,7 @@ import api from "@/utils/api";
 import { useUserStore } from "@/store/user";
 import { Subscription } from "@/models/Subscription";
 import CurrentPlaneCard from "@/components/CurrentPlanCard.vue";
+import PlansCard from "@/components/PlansCard.vue";
 
 const store = useUserStore()
 const subscription = ref({} as Subscription)
