@@ -11,7 +11,7 @@
       >
         <ion-icon slot="icon-only" :icon="arrowBack"></ion-icon>
       </ion-button>
-      <CurrentPlaneCard :subscription="subscription"/>
+      <CurrentPlaneCard :subscription="subscription" />
     </ion-content>
   </ion-page>
 </template>
@@ -27,15 +27,45 @@ import {
   IonPage,
   onIonViewWillEnter,
 } from "@ionic/vue";
+import { ref } from "vue";
+import api from "@/utils/api";
+import { useUserStore } from "@/store/user";
+import { Subscription } from "@/models/Subscription";
 import CurrentPlaneCard from "@/components/CurrentPlanCard.vue";
-import {ref} from "vue";
-import {Subscription} from "cypress/types/net-stubbing";
 
+const store = useUserStore()
 const subscription = ref({} as Subscription)
+const currentUser = store.getCurrentUser
 
-const showCurrentSubscription = (() => {
+interface RequestPayload {
+  subscription: {
+    user_id: number
+  }
+}
 
+const parseDataToSubscription = ((data: any) => {
+  subscription.value = {
+    id: data.subscription.id,
+    startDate: data.subscription.start_date,
+    endDate: data.subscription.end_date,
+    planName: data.subscription.plan_name,
+  }
 })
+
+const showCurrentSubscription = async () => {
+  const payload: RequestPayload = {
+    subscription: {
+      user_id: currentUser.id
+    }
+  }
+
+  await api.get('/subscriptions/active', { params: payload })
+    .then((response) => {
+      parseDataToSubscription(response.data)
+    }).catch((error) => {
+      console.log(error);
+    })
+}
 
 onIonViewWillEnter(() => {
   showCurrentSubscription()

@@ -37,7 +37,7 @@ import '@ionic/vue/css/palettes/dark.system.css';
 import './theme/variables.css';
 
 import { defineCustomElements } from '@ionic/pwa-elements/loader';
-defineCustomElements(window);
+defineCustomElements(window).then(r => r);
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedstate)

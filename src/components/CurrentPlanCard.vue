@@ -6,9 +6,7 @@
           <ion-col>
             <ion-card-title>Current Plan</ion-card-title>
           </ion-col>
-          <ion-col size="auto">
-            Free
-          </ion-col>
+          <ion-col size="auto">{{ props.subscription?.planName }}</ion-col>
         </ion-row>
       </ion-grid>
       <ion-grid class="ion-no-padding ion-no-margin ion-margin-top">
@@ -17,7 +15,7 @@
             <ion-card-subtitle>Time Period</ion-card-subtitle>
           </ion-col>
           <ion-col size="auto">
-            12/04/2024 - 12/04/2025
+            {{ props.subscription?.startDate }} - {{ props.subscription?.endDate }}
           </ion-col>
         </ion-row>
       </ion-grid>
@@ -48,11 +46,9 @@ import {
   IonCardSubtitle,
   IonButton
 } from "@ionic/vue";
-import {Subscription} from "@/models/Subscription";
+import { Subscription } from "@/models/Subscription";
 
-const props = defineProps({
-  subscription: Subscription
-})
+const props = defineProps({ subscription: Object })
 </script>
 
 <style scoped>

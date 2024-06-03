@@ -267,7 +267,7 @@ const submitForm = async () => {
   const payload: Payload = {
     user: {
       email: email.value,
-      phone_number:  `${selectedCountryCode.value}${phone_number.value}`,
+      phone_number: `${selectedCountryCode.value}${phone_number.value}`,
       password: password.value
     }
    }
@@ -279,7 +279,7 @@ const signUp = async (payload: Payload) => {
   await api.post('/auth/sign_up', payload)
     .then((response) => {
       storage.set('user', payload.user)
-      message.value = response.data.message,
+      message.value = response.data.message
       header.value = 'Registration completed successfully'
       isOpen.value = true
       ionRouter.replace('/confirm-code', )

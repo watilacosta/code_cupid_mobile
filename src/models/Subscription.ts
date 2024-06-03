@@ -6,7 +6,6 @@ export class Subscription {
 
 	constructor(
 		id: number,
-		_planName: string,
 		startDate: Date,
 		endDate: Date,
 		planName: string) {
