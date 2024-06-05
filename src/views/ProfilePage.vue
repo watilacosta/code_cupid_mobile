@@ -195,7 +195,10 @@ const confirmDatetime = () => {
   toggleDatePicker()
 }
 
-const toggleDatePicker = () => datetimeOpen.value = !datetimeOpen.value
+const toggleDatePicker = () => {
+  datetimeOpen.value = !datetimeOpen.value
+  btnAccountShow.value = !btnAccountShow.value
+}
 
 const openToast = (state: boolean) => isOpen.value = state
 
