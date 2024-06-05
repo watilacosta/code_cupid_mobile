@@ -56,6 +56,10 @@
                 v-model="computedBirthdate"
                 :disabled="accountDisable"
               />
+
+              <ion-datetime
+                presentation="date"
+              />
             </ion-col>
           </ion-row>
           <ion-row>
@@ -130,6 +134,7 @@ import {
   IonToast,
   onIonViewWillEnter,
   useIonRouter,
+  IonDatetime
 } from '@ionic/vue';
 import { notificationsOutline } from "ionicons/icons";
 
@@ -161,7 +166,10 @@ const logout = () => {
   ionRouter.replace('/login')
 }
 
-const computedBirthdate = computed(() => moment(user.value.birthdate).format('DD/MM/YYYY'))
+const computedBirthdate = computed({
+  get: () => moment(user.value.birthdate).format('YYYY/MM/DD'),
+  set: (inputValue) => user.value.birthdate = new Date(inputValue)
+})
 
 const fetchCurrentUser = () => user.value = userStore.getCurrentUser
 
