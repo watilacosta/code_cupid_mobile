@@ -47,19 +47,34 @@
           <ion-row>
             <ion-col>
               <ion-input
+                @click="toggleDatePicker()"
+                v-model="computedBirthdate"
+                :disabled="accountDisable"
+                readonly
                 fill="outline"
                 label="Birthdate"
                 class="ion-margin-bottom"
                 type="date"
                 id="birthdate"
                 label-placement="floating"
-                v-model="computedBirthdate"
-                :disabled="accountDisable"
               />
-
+            </ion-col>
+          </ion-row>
+          <ion-row>
+            <ion-col>
               <ion-datetime
+                v-if="datetimeOpen"
+                v-model="computedBirthdate"
+                ref="datetime"
+                :prefer-wheel="true"
                 presentation="date"
-              />
+              >
+                <span slot="title">Select your Birthdate</span>
+                <ion-buttons slot="buttons">
+                  <ion-button color="primary" @click="cancelDatetime()">Cancel</ion-button>
+                  <ion-button color="primary" @click="confirmDatetime()">Done</ion-button>
+                </ion-buttons>
+              </ion-datetime>
             </ion-col>
           </ion-row>
           <ion-row>
@@ -115,7 +130,7 @@
           :duration="4000"
           position="top"
           :icon="notificationsOutline"
-          @didDismiss="setOpen(false)"
+          @didDismiss="openToast(false)"
         />
       </ion-content>
     </ion-page>
@@ -124,6 +139,7 @@
 <script setup lang="ts">
 import {
   IonButton,
+  IonButtons,
   IonCol,
   IonContent,
   IonGrid,
@@ -132,9 +148,9 @@ import {
   IonRow,
   IonText,
   IonToast,
+  IonDatetime,
   onIonViewWillEnter,
   useIonRouter,
-  IonDatetime
 } from '@ionic/vue';
 import { notificationsOutline } from "ionicons/icons";
 
@@ -148,28 +164,45 @@ import UserService from "@/services/UserService";
 import PlanSettings from '@/components/PlanSettings.vue';
 import DiscoverySettings from "@/components/DiscoverySettings.vue";
 
+const service = UserService
 const authStore = useAuthStore()
 const userStore = useUserStore()
 const ionRouter = useIonRouter()
-
-const service = UserService
 
 const user = ref({} as User)
 const accountDisable = ref(true)
 const btnAccountShow = ref(false)
 const isOpen = ref(false)
+const datetimeOpen = ref(false)
+const datetime = ref()
 
-const setOpen = (state: boolean) => isOpen.value = state
+const computedBirthdate = computed({
+  get: () => moment(user.value.birthdate).format('YYYY-MM-DD'),
+  set: (inputValue) => {
+    const [year, month, day] = inputValue.split('-').map(Number)
+
+    user.value.birthdate = new Date(year, month - 1, day)
+  }
+})
+
+const cancelDatetime = () => {
+  datetime.value.$el.cancel();
+  toggleDatePicker()
+}
+
+const confirmDatetime = () => {
+  datetime.value.$el.confirm();
+  toggleDatePicker()
+}
+
+const toggleDatePicker = () => datetimeOpen.value = !datetimeOpen.value
+
+const openToast = (state: boolean) => isOpen.value = state
 
 const logout = () => {
   authStore.logout()
   ionRouter.replace('/login')
 }
-
-const computedBirthdate = computed({
-  get: () => moment(user.value.birthdate).format('YYYY/MM/DD'),
-  set: (inputValue) => user.value.birthdate = new Date(inputValue)
-})
 
 const fetchCurrentUser = () => user.value = userStore.getCurrentUser
 
@@ -180,6 +213,7 @@ const editAccount = (() => {
 const toggleInputsEnabled = (() => {
   accountDisable.value = !accountDisable.value
   btnAccountShow.value = !btnAccountShow.value
+  datetimeOpen.value = false
 })
 
 const updateProfile = async () => {
@@ -219,11 +253,6 @@ ion-button.delete-account {
   margin-top: 3%;
 }
 
-.link {
-  font-size: 16px;
-  color: #247DCF;
-}
-
 ion-range::part(pin) {
   display: inline-flex;
   align-items: center;
@@ -233,5 +262,14 @@ ion-range::part(pin) {
   transform: scale(1.01);
 
   top: -25px;
+}
+
+ion-datetime {
+  margin-left: 3%;
+}
+
+.link {
+  font-size: 16px;
+  color: #247DCF;
 }
 </style>
