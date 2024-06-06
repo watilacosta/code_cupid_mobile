@@ -1,6 +1,6 @@
 <template>
   <ion-page>
-    <PageTitle title="Menage Subscription" />
+    <PageTitle title="Menage Subscription"/>
 
     <ion-content class="ion-padding" color="light">
       <ion-button

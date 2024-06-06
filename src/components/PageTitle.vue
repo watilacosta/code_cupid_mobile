@@ -1,6 +1,6 @@
 <template>
   <ion-header>
-    <ion-toolbar>
+    <ion-toolbar color="primary">
       <ion-title>{{ title }}</ion-title>
     </ion-toolbar>
   </ion-header>

@@ -1,6 +1,6 @@
 <template>
-  <ion-card>
-    <ion-card-header>
+  <ion-card color="light">
+    <ion-card-header color="light">
       <ion-grid class="ion-no-padding ion-no-margin ion-margin-top">
         <ion-row class="ion-justify-content-between ion-align-items-center">
           <ion-col>
@@ -22,8 +22,9 @@
     </ion-card-header>
     <ion-row class="ion-justify-content-center
       ion-align-items-center
-      ion-margin-horizontal
-      ion-margin-bottom"
+      ion-margin-start
+      ion-margin-bottom
+      ion-margin-top"
     >
       <ion-col class="ion-margin-start">
         <ion-button shape="round" fill="outline">Unsubscribe</ion-button>
@@ -64,5 +65,9 @@ ion-card-subtitle {
 ion-button {
   width: 136px;
   height: 40px;
+}
+
+ion-card {
+  border-radius: 15px;
 }
 </style>
