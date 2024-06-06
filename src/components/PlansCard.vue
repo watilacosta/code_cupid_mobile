@@ -17,15 +17,20 @@
         <h3>Send as many likes as you want</h3>
       </ion-row>
 
-      <ion-row>
-        <ion-col>
-
-        </ion-col>
-        <ion-col>
-
-        </ion-col>
-        <ion-col>
-
+      <ion-row class="ion-margin-vertical ion-padding-vertical row-plans">
+        <ion-col
+          v-for="plan in plans"
+          :key="plan.id"
+        >
+          <ion-row class="ion-justify-content-center ion-align-items-center">
+            <h3 class="plan-name">{{ plan.duration_in_months }}</h3>
+          </ion-row>
+          <ion-row class="ion-justify-content-center ion-align-items-center">
+            <h3 class="plan-months">Months</h3>
+          </ion-row>
+          <ion-row class="ion-justify-content-center ion-align-items-center">
+            <h3>$ {{ plan.price }}/mo</h3>
+          </ion-row>
         </ion-col>
       </ion-row>
     </ion-card-content>
@@ -43,7 +48,15 @@ import {
   IonRow,
   IonCol
 } from "@ionic/vue";
-import {heart} from "ionicons/icons";
+import { heart } from "ionicons/icons";
+import { Plan } from "@/models/Plan";
+
+defineProps({
+  plans: {
+    type: Array as () => Plan[],
+    required: true
+  }
+})
 </script>
 
 <style scoped>
@@ -69,5 +82,18 @@ h2 {
 
 h3 {
   font-size: 14px;
+}
+
+.plan-name {
+  font-size: 29px;
+  font-weight: bold;
+}
+
+.plan-months {
+  font-weight: bold;
+}
+
+.row-plans {
+  border: 1px solid #e0ac08;
 }
 </style>

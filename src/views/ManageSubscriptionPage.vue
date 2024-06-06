@@ -12,7 +12,7 @@
         <ion-icon slot="icon-only" :icon="arrowBack"></ion-icon>
       </ion-button>
       <CurrentPlaneCard :subscription="subscription" />
-      <PlansCard />
+      <PlansCard :plans="plans" />
     </ion-content>
   </ion-page>
 </template>
@@ -34,15 +34,28 @@ import { useUserStore } from "@/store/user";
 import { Subscription } from "@/models/Subscription";
 import CurrentPlaneCard from "@/components/CurrentPlanCard.vue";
 import PlansCard from "@/components/PlansCard.vue";
+import PlanService from '@/services/PlanService'
+import { Plan } from "@/models/Plan";
 
 const store = useUserStore()
 const subscription = ref({} as Subscription)
 const currentUser = store.getCurrentUser
+const service = PlanService
+const plans = ref([] as Plan[])
 
 interface RequestPayload {
   subscription: {
     user_id: number
   }
+}
+
+const listPlans = async () => {
+  await service.list()
+    .then((response) => {
+      plans.value = response.data
+    }).catch((error) => {
+      console.log(error)
+    })
 }
 
 const parseDataToSubscription = ((data: any) => {
@@ -72,6 +85,7 @@ const showCurrentSubscription = async () => {
 
 onIonViewWillEnter(() => {
   showCurrentSubscription()
+  listPlans()
 })
 </script>
 
