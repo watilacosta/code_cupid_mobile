@@ -60,23 +60,20 @@
               />
             </ion-col>
           </ion-row>
-          <ion-row>
-            <ion-col>
-              <ion-datetime
-                v-if="datetimeOpen"
-                v-model="computedBirthdate"
-                ref="datetime"
-                :prefer-wheel="true"
-                presentation="date"
-              >
-                <span slot="title">Select your Birthdate</span>
-                <ion-buttons slot="buttons">
-                  <ion-button color="primary" @click="cancelDatetime()">Cancel</ion-button>
-                  <ion-button color="primary" @click="confirmDatetime()">Done</ion-button>
-                </ion-buttons>
-              </ion-datetime>
-            </ion-col>
-          </ion-row>
+          <ion-datetime
+            v-if="datetimeOpen"
+            v-model="computedBirthdate"
+            ref="datetime"
+            :prefer-wheel="true"
+            presentation="date"
+            color="primary"
+          >
+            <span slot="title">Select your Birthdate</span>
+            <ion-buttons slot="buttons">
+              <ion-button color="primary" @click="cancelDatetime()">Cancel</ion-button>
+              <ion-button color="primary" @click="confirmDatetime()">Done</ion-button>
+            </ion-buttons>
+          </ion-datetime>
           <ion-row>
             <ion-col>
               <ion-input
@@ -269,7 +266,14 @@ ion-range::part(pin) {
 }
 
 ion-datetime {
-  min-width: 100%;
+  margin-left: 1%;
+  margin-bottom: 20px;
+  min-width: 98%;
+  border-radius: 6px;
+  box-shadow: rgba(var(--ion-color-tertiary-rgb), 0.2) 0 5px 12px -3px;
+
+  --background: #f6f8fc;
+  --background-rgb: 246,248,252;
 }
 
 .link {
