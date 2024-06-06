@@ -96,6 +96,7 @@
             v-show="btnAccountShow"
             :strong="true"
             type="submit"
+            size="large"
             class="ion-color-primary ion-margin-top"
           >
             Save
@@ -268,7 +269,7 @@ ion-range::part(pin) {
 }
 
 ion-datetime {
-  margin-left: 3%;
+  min-width: 100%;
 }
 
 .link {
