@@ -23,31 +23,36 @@ import router from "@/router";
 import { arrowBack } from "ionicons/icons";
 import {
   IonButton,
-  IonIcon,
   IonContent,
+  IonIcon,
   IonPage,
   onIonViewWillEnter,
 } from "@ionic/vue";
-import { ref } from "vue";
-import api from "@/utils/api";
 import { useUserStore } from "@/store/user";
 import { Subscription } from "@/models/Subscription";
 import CurrentPlaneCard from "@/components/CurrentPlanCard.vue";
 import PlansCard from "@/components/PlansCard.vue";
 import PlanService from '@/services/PlanService'
 import { Plan } from "@/models/Plan";
+import { ref } from "vue";
+import convertKeysToCamelCase from "@/utils/convertSnakeToCamel";
 
 const store = useUserStore()
 const subscription = ref({} as Subscription)
 const currentUser = store.getCurrentUser
 const service = PlanService
-const plans = ref([] as Plan[])
+const plans = ref([] as Array<Plan>)
 
-interface RequestPayload {
-  subscription: {
-    user_id: number
+const parseDataSubscription = (() => {
+  const subscriptionData = convertKeysToCamelCase(currentUser.subscription)
+
+  subscription.value = {
+    id: subscriptionData.id,
+    startDate: subscriptionData.startDate,
+    endDate: subscriptionData.endDate,
+    planName: subscriptionData.planName,
   }
-}
+})
 
 const listPlans = async () => {
   await service.list()
@@ -58,33 +63,8 @@ const listPlans = async () => {
     })
 }
 
-const parseDataToSubscription = ((data: any) => {
-  subscription.value = {
-    id: data.subscription.id,
-    startDate: data.subscription.start_date,
-    endDate: data.subscription.end_date,
-    planName: data.subscription.plan_name,
-  }
-})
-
-const showCurrentSubscription = async () => {
-  const payload: RequestPayload = {
-    subscription: {
-      user_id: currentUser.id
-    }
-  }
-
-  await api.get('/subscriptions/active', { params: payload })
-    .then((response) => {
-      parseDataToSubscription(response.data)
-    })
-    .catch((error) => {
-      console.log(error);
-    })
-}
-
 onIonViewWillEnter(() => {
-  showCurrentSubscription()
+  parseDataSubscription()
   listPlans()
 })
 </script>

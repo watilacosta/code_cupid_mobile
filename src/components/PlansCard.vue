@@ -20,13 +20,13 @@
       <ion-row class="ion-margin-vertical ion-padding-vertical row-plans">
         <ion-col
           v-for="plan in plans"
-          :key="plan.id"
+          :key="plan.name"
         >
           <ion-row class="ion-justify-content-center ion-align-items-center">
             <h3 class="plan-name">{{ plan.duration_in_months }}</h3>
           </ion-row>
           <ion-row class="ion-justify-content-center ion-align-items-center">
-            <h3 class="plan-months">Months</h3>
+            <h3 class="plan-months">{{ plan.duration_in_months == 1 ? 'Month' : 'Months' }}</h3>
           </ion-row>
           <ion-row class="ion-justify-content-center ion-align-items-center">
             <h3>$ {{ plan.price }}/mo</h3>
@@ -49,11 +49,10 @@ import {
   IonCol
 } from "@ionic/vue";
 import { heart } from "ionicons/icons";
-import { Plan } from "@/models/Plan";
 
 defineProps({
   plans: {
-    type: Array as () => Plan[],
+    type: Array<any>,
     required: true
   }
 })
