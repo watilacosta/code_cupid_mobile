@@ -6,7 +6,7 @@
 
     <ion-card-content>
       <ion-row class="ion-justify-content-center ion-align-items-center">
-        <ion-button shape="round" size="large">
+        <ion-button shape="round" size="large" class="btn-heart">
           <ion-icon slot="icon-only" :icon="heart"></ion-icon>
         </ion-button>
       </ion-row>
@@ -17,8 +17,9 @@
         <h3>Send as many likes as you want</h3>
       </ion-row>
 
-      <ion-row class="ion-margin-vertical ion-padding-vertical row-plans">
+      <ion-row class="ion-margin-vertical ion-padding-vertical row-plans plans">
         <ion-col
+          class="plan"
           v-for="plan in plans"
           :key="plan.name"
         >
@@ -33,6 +34,17 @@
           </ion-row>
         </ion-col>
       </ion-row>
+
+      <ion-button
+        @click="updatePlan"
+        expand="full"
+        shape="round"
+        size="large"
+        mode="md"
+        class="grad-btn"
+      >
+        Continue
+      </ion-button>
     </ion-card-content>
   </ion-card>
 </template>
@@ -49,12 +61,24 @@ import {
   IonCol
 } from "@ionic/vue";
 import { heart } from "ionicons/icons";
+import {Plan} from "@/models/Plan";
+import {ref} from "vue";
 
 defineProps({
   plans: {
     type: Array<any>,
     required: true
   }
+})
+
+const selectedPlan = ref({} as Plan)
+
+const selectPlan = ((plan: Plan) => {
+  selectedPlan.value = plan
+})
+
+const updatePlan = (() => {
+  console.log(selectedPlan.value)
 })
 </script>
 
@@ -70,7 +94,7 @@ ion-card-title {
   font-weight: bold;
 }
 
-ion-button {
+.btn-heart {
   width: 57px;
   height: 57px;
 }
@@ -94,5 +118,18 @@ h3 {
 
 .row-plans {
   border: 1px solid #e0ac08;
+}
+
+.grad-btn {
+  --background: linear-gradient(to bottom, #EEAF51 0%, #B67718  100%, #EEAF51  0%);
+  --color: white;
+}
+
+.plans {
+  background-color: #e3e3e3;
+}
+
+.plan {
+  background-color: #e3e3e3;
 }
 </style>
