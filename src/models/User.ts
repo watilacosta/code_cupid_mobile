@@ -7,6 +7,7 @@ export class User {
   private _email: string;
   private _phone_number: string;
   private _username: string;
+  private _gender: string;
   private _subscription: Subscription;
 
 
@@ -17,6 +18,7 @@ export class User {
     email: string,
     phone_number: string,
     username: string,
+    gender: string,
     subscription: Subscription
   ) {
     this._id = id;
@@ -25,6 +27,7 @@ export class User {
     this._email = email;
     this._phone_number = phone_number;
     this._username = username;
+    this._gender = gender;
     this._subscription = subscription;
   }
 
@@ -51,6 +54,10 @@ export class User {
     return this._username;
   }
 
+  get gender(): string {
+    return this._gender;
+  }
+
   get subscription(): Subscription {
     return this._subscription;
   }
@@ -70,6 +77,10 @@ export class User {
 
   set username(username: string) {
     this._username = username;
+  }
+
+  set gender(gender: string) {
+    this._gender = gender;
   }
 
   set subscription(subscription: Subscription) {

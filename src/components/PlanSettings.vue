@@ -12,12 +12,13 @@
     <ion-row>
       <ion-col>
         <ion-input
+          id="inp-current-plan"
           fill="outline"
           label="Current Plan"
           type="text"
           label-placement="floating"
           readonly
-          value="Free"
+          :value="currentPlan"
         >
           <ion-button
             @click="router.push('/manage-subscription')"
@@ -45,6 +46,10 @@ import {
 } from '@ionic/vue'
 import { openOutline } from "ionicons/icons";
 import router from '@/router';
+
+defineProps({
+  currentPlan: String
+})
 </script>
 <style scoped>
 ion-text {

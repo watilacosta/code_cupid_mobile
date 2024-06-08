@@ -6,13 +6,13 @@ const authStore = useAuthStore();
 
 class UserService {
   update(user: User): Promise<any> {
-    const { id, username, phone_number, birthdate, email } = user;
+    const { id, username, phone_number, birthdate, email, gender } = user;
 
     return api({
       method: "put",
       url: `/user_profiles/${id}`,
       headers: { Authorization: authStore.getAuthToken },
-      data: { user: { username, phone_number, birthdate, email } }
+      data: { user: { username, phone_number, birthdate, email, gender } }
     });
   }
 }

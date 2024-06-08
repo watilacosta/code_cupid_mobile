@@ -67,6 +67,7 @@
             :prefer-wheel="true"
             presentation="date"
             color="primary"
+            id="datetime"
           >
             <span slot="title">Select your Birthdate</span>
             <ion-buttons slot="buttons">
@@ -86,6 +87,40 @@
               />
             </ion-col>
           </ion-row>
+          <ion-grid class="ion-margin-vertical">
+            <ion-row class="ion-justify-content-evenly ion-align-items-center">
+              <ion-col size="3" class="col-gender">
+                <ion-button
+                  id="btnFemale"
+                  shape="round"
+                  size="large"
+                  :color="genderColor('female')"
+                  @click="setGender('female')"
+                  :disabled="accountDisable"
+                >
+                  <ion-icon slot="icon-only" :icon="maleOutline"></ion-icon>
+                </ion-button>
+                <ion-text class="ion-no-margin" :color="accountDisable ? 'medium' : ''">
+                  Female
+                </ion-text>
+              </ion-col>
+              <ion-col size="3" class="col-gender">
+                <ion-button
+                  id="btnMale"
+                  shape="round"
+                  size="large"
+                  :color="genderColor('male')"
+                  @click="setGender('male')"
+                  :disabled="accountDisable"
+                >
+                  <ion-icon slot="icon-only" :icon="femaleOutline"></ion-icon>
+                </ion-button>
+                <ion-text class="ion-no-margin" :color="accountDisable ? 'medium' : ''">
+                  Male
+                </ion-text>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
           <ion-button
             fill="solid"
             expand="block"
@@ -100,7 +135,7 @@
           </ion-button>
         </form>
 
-        <PlanSettings />
+        <PlanSettings :current-plan="currentPlan" />
         <DiscoverySettings />
 
         <ion-button
@@ -140,27 +175,28 @@ import {
   IonButtons,
   IonCol,
   IonContent,
+  IonDatetime,
   IonGrid,
+  IonIcon,
   IonInput,
   IonPage,
   IonRow,
   IonText,
   IonToast,
-  IonDatetime,
   onIonViewWillEnter,
   useIonRouter,
 } from '@ionic/vue';
-import { notificationsOutline } from "ionicons/icons";
-
+import { femaleOutline, maleOutline, notificationsOutline } from "ionicons/icons";
 import { useAuthStore } from '@/store/auth';
 import { useUserStore } from '@/store/user';
 import { User } from '@/models/User';
-import { computed, ref } from 'vue';
+import {computed, ref} from 'vue';
 import moment from 'moment';
 import ProfileTopCard from "@/components/ProfileTopCard.vue";
 import UserService from "@/services/UserService";
 import PlanSettings from '@/components/PlanSettings.vue';
 import DiscoverySettings from "@/components/DiscoverySettings.vue";
+import convertKeysToCamelCase from "@/utils/convertSnakeToCamel";
 
 const service = UserService
 const authStore = useAuthStore()
@@ -173,6 +209,21 @@ const btnAccountShow = ref(false)
 const isOpen = ref(false)
 const datetimeOpen = ref(false)
 const datetime = ref()
+const currentPlan = ref("")
+
+const genderColor = ((gender: string) => {
+  return user.value.gender === gender ? 'primary' : 'light'
+})
+
+const setGender = ((gender: string) => {
+  user.value.gender = gender
+})
+
+const setCurrentPlan = (() => {
+  const currentSubscriptionData = convertKeysToCamelCase(user.value.subscription)
+
+  currentPlan.value = currentSubscriptionData.planName
+})
 
 const computedBirthdate = computed({
   get: () => moment(user.value.birthdate).format('YYYY-MM-DD'),
@@ -232,6 +283,7 @@ const deleteAccount = (() => console.log('delete account...'))
 
 onIonViewWillEnter(() => {
   fetchCurrentUser()
+  setCurrentPlan()
 })
 </script>
   
@@ -274,6 +326,11 @@ ion-datetime {
 
   --background: #f6f8fc;
   --background-rgb: 246,248,252;
+}
+
+.col-gender {
+  justify-content: center;
+  text-align: center;
 }
 
 .link {
