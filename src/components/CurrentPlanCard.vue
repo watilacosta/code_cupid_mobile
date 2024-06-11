@@ -27,7 +27,12 @@
       ion-margin-top"
     >
       <ion-col class="ion-margin-start">
-        <ion-button shape="round" fill="outline">Unsubscribe</ion-button>
+        <ion-button
+          :disabled="props.subscription?.planName === 'Free'"
+          shape="round"
+          fill="outline"
+        >Unsubscribe
+      </ion-button>
       </ion-col>
       <ion-col class="ion-margin-end">
         <ion-button shape="round" class="ion-no-margin">Upgrade</ion-button>

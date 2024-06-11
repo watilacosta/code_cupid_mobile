@@ -221,12 +221,11 @@ const setGender = ((gender: string) => {
 
 const setCurrentPlan = (() => {
   const currentSubscriptionData = convertKeysToCamelCase(user.value.subscription)
-
   currentPlan.value = currentSubscriptionData.planName
 })
 
 const computedBirthdate = computed({
-  get: () => moment(user.value.birthdate).format('YYYY-MM-DD'),
+  get: () => moment(user.value.birthdate || new Date).format('YYYY-MM-DD'),
   set: (inputValue) => {
     const [year, month, day] = inputValue.split('-').map(Number)
 
