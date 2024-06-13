@@ -1,21 +1,28 @@
 <template>
   <ion-page>
     <ion-content :fullscreen="true" color="light">
-      <ion-row class="ion-justify-content-center ion-align-items-center">
-        <ion-thumbnail>
-          <ion-img
-              src="resources/logo.png"
-              alt="logo code cupid"
-              class="ion-margin-vertical"
-          >
-          </ion-img>
-        </ion-thumbnail>
+      <ion-row class="ion-justify-content-end">
+        <ion-col size="6">
+          <ion-thumbnail>
+            <ion-img
+                src="resources/logo.png"
+                alt="logo code cupid"
+                class="ion-margin-vertical"
+            >
+            </ion-img>
+          </ion-thumbnail>
+        </ion-col>
+        <ion-col size="2">
+          <ion-button shape="round" fill="clear" color="dark">
+            <ion-icon :icon="funnelOutline" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-col>
       </ion-row>
 
       <div class="card-container ion-margin-horizontal">
         <ion-card class="ion-no-margin">
           <img src="/resources/myphoto.jpg" alt="timeline-photo"/>
-          <div class="card-text">Wátila, 36</div>
+          <div class="card-text">{{ user.username || user.email }}, {{ user.age }}</div>
         </ion-card>
       </div>
 
@@ -38,6 +45,7 @@
 </template>
 
 <script setup lang="ts">
+import { useUserStore } from '@/store/user';
 import {
   IonPage,
   IonContent,
@@ -50,7 +58,11 @@ import {
   IonIcon,
   IonButton,
 } from '@ionic/vue';
-import { closeOutline, heartSharp } from "ionicons/icons";
+import { closeOutline, funnelOutline, heartSharp } from "ionicons/icons";
+
+const userStore = useUserStore()
+
+const user = userStore.getCurrentUser;
 </script>
 
 <style scoped>
@@ -58,7 +70,7 @@ ion-thumbnail {
   margin-top: 5%;
   --size: 120px;
   --border-radius: 1px;
-  height: 50px;
+  height: 40px;
 }
 
 ion-button {
@@ -67,8 +79,8 @@ ion-button {
 }
 
 .card-container {
-  height: 70%;
-  margin-top: 10%;
+  height: 68%;
+  margin-top: 8%;
   margin-bottom: 1%;
 }
 
