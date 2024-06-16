@@ -1,6 +1,7 @@
 <template>
   <ion-page>
     <ion-content :fullscreen="true" color="light">
+      <LoaderBar v-if="showLoaderBar" />
       <ion-row class="ion-justify-content-end">
         <ion-col size="6">
           <ion-thumbnail>
@@ -61,13 +62,16 @@ import {
   IonCard,
   IonIcon,
   IonButton,
+  IonSpinner,
   onIonViewWillEnter,
 } from '@ionic/vue';
 import { closeOutline, funnelOutline, heartSharp } from "ionicons/icons";
 import { ref } from 'vue';
+import LoaderBar from "@/components/LoaderBar.vue";
 
 const service = TimeLineService;
 const profiles = ref([] as Array<Profile>);
+const showLoaderBar = ref(false)
 
 interface Profile {
   id: number,
@@ -78,14 +82,26 @@ interface Profile {
 
 const listProfiles = async () => {
   await service.list()
-    .then((response) => profiles.value = response.data)
+    .then((response) => {
+      profiles.value = response.data
+    })
     .catch((error) => console.log(error))
+
+  showLoaderBar.value = false
 }
 
-onIonViewWillEnter(() => listProfiles())
+onIonViewWillEnter(() => {
+  showLoaderBar.value = true
+  listProfiles()
+})
 </script>
 
 <style scoped>
+ion-spinner {
+  width: 100px;
+  height: 100px;
+}
+
 ion-thumbnail {
   margin-top: 5%;
   --size: 120px;
