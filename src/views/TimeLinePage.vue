@@ -19,33 +19,37 @@
         </ion-col>
       </ion-row>
 
-      <div class="card-container ion-margin-horizontal">
-        <ion-card class="ion-no-margin">
-          <img src="/resources/myphoto.jpg" alt="timeline-photo"/>
-          <div class="card-text">{{ user.username || user.email }}, {{ user.age }}</div>
-        </ion-card>
+      <div v-for="profile in profiles"
+        :key="profile.id"
+      >
+        <div class="card-container ion-margin-horizontal">
+          <ion-card class="ion-no-margin">
+            <img src="/resources/myphoto.jpg" alt="timeline-photo"/>
+            <div class="card-text">{{ profile.username || 'Guest' }}, {{ profile.age }}</div>
+          </ion-card>
+        </div>
+  
+        <ion-grid>
+          <ion-row class="ion-justify-content-around ion-margin-vertical ion-padding-vertical">
+            <ion-col size="3" class="ion-padding-start ion-margin-start">
+              <ion-button shape="round" color="danger">
+                <ion-icon :icon="closeOutline" slot="icon-only" size="large"></ion-icon>
+              </ion-button>
+            </ion-col>
+            <ion-col size="3" class="ion-padding-start ion-margin-start">
+              <ion-button shape="round">
+                <ion-icon :icon="heartSharp" slot="icon-only" size="large"></ion-icon>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
       </div>
-
-      <ion-grid>
-        <ion-row class="ion-justify-content-around ion-margin-vertical ion-padding-vertical">
-          <ion-col size="3" class="ion-padding-start ion-margin-start">
-            <ion-button shape="round" color="danger">
-              <ion-icon :icon="closeOutline" slot="icon-only" size="large"></ion-icon>
-            </ion-button>
-          </ion-col>
-          <ion-col size="3" class="ion-padding-start ion-margin-start">
-            <ion-button shape="round">
-              <ion-icon :icon="heartSharp" slot="icon-only" size="large"></ion-icon>
-            </ion-button>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
     </ion-content>
   </ion-page>
 </template>
 
 <script setup lang="ts">
-import { useUserStore } from '@/store/user';
+import TimeLineService from '@/services/TimeLineService';
 import {
   IonPage,
   IonContent,
@@ -57,12 +61,28 @@ import {
   IonCard,
   IonIcon,
   IonButton,
+  onIonViewWillEnter,
 } from '@ionic/vue';
 import { closeOutline, funnelOutline, heartSharp } from "ionicons/icons";
+import { ref } from 'vue';
 
-const userStore = useUserStore()
+const service = TimeLineService;
+const profiles = ref([] as Array<Profile>);
 
-const user = userStore.getCurrentUser;
+interface Profile {
+  id: number,
+  username: string,
+  age: number,
+  gender: string
+}
+
+const listProfiles = async () => {
+  await service.list()
+    .then((response) => profiles.value = response.data)
+    .catch((error) => console.log(error))
+}
+
+onIonViewWillEnter(() => listProfiles())
 </script>
 
 <style scoped>

@@ -32,7 +32,7 @@ import { useUserStore } from "@/store/user";
 import { Subscription } from "@/models/Subscription";
 import CurrentPlaneCard from "@/components/CurrentPlanCard.vue";
 import PlansCard from "@/components/PlansCard.vue";
-import PlanService from '@/services/PlanService'
+import PlanService from '@/services/PlanService';
 import { Plan } from "@/models/Plan";
 import { ref } from "vue";
 import convertKeysToCamelCase from "@/utils/convertSnakeToCamel";

@@ -47,34 +47,20 @@
           <ion-row>
             <ion-col>
               <ion-input
-                @click="toggleDatePicker()"
-                v-model="computedBirthdate"
+                v-model="user.age"
                 :disabled="accountDisable"
-                readonly
+                :min="18"
+                :max="125"
+                inputmode="numeric"
                 fill="outline"
-                label="Birthdate"
+                label="Age"
                 class="ion-margin-bottom"
-                type="date"
-                id="birthdate"
-                label-placement="floating"
+                type="number"
+                id="age"
+                label-placement="stacked"
               />
             </ion-col>
           </ion-row>
-          <ion-datetime
-            v-if="datetimeOpen"
-            v-model="computedBirthdate"
-            ref="datetime"
-            :prefer-wheel="true"
-            presentation="date"
-            color="primary"
-            id="datetime"
-          >
-            <span slot="title">Select your Birthdate</span>
-            <ion-buttons slot="buttons">
-              <ion-button color="primary" @click="cancelDatetime()">Cancel</ion-button>
-              <ion-button color="primary" @click="confirmDatetime()">Done</ion-button>
-            </ion-buttons>
-          </ion-datetime>
           <ion-row>
             <ion-col>
               <ion-input
@@ -172,10 +158,8 @@
 <script setup lang="ts">
 import {
   IonButton,
-  IonButtons,
   IonCol,
   IonContent,
-  IonDatetime,
   IonGrid,
   IonIcon,
   IonInput,
@@ -190,8 +174,7 @@ import { femaleOutline, maleOutline, notificationsOutline } from "ionicons/icons
 import { useAuthStore } from '@/store/auth';
 import { useUserStore } from '@/store/user';
 import { User } from '@/models/User';
-import {computed, ref} from 'vue';
-import moment from 'moment';
+import { ref } from 'vue';
 import ProfileTopCard from "@/components/ProfileTopCard.vue";
 import UserService from "@/services/UserService";
 import PlanSettings from '@/components/PlanSettings.vue';
@@ -208,7 +191,6 @@ const accountDisable = ref(true)
 const btnAccountShow = ref(false)
 const isOpen = ref(false)
 const datetimeOpen = ref(false)
-const datetime = ref()
 const currentPlan = ref("")
 
 const genderColor = ((gender: string) => {
@@ -223,30 +205,6 @@ const setCurrentPlan = (() => {
   const currentSubscriptionData = convertKeysToCamelCase(user.value.subscription)
   currentPlan.value = currentSubscriptionData.planName
 })
-
-const computedBirthdate = computed({
-  get: () => moment(user.value.birthdate || new Date).format('YYYY-MM-DD'),
-  set: (inputValue) => {
-    const [year, month, day] = inputValue.split('-').map(Number)
-
-    user.value.birthdate = new Date(year, month - 1, day)
-  }
-})
-
-const cancelDatetime = () => {
-  datetime.value.$el.cancel();
-  toggleDatePicker()
-}
-
-const confirmDatetime = () => {
-  datetime.value.$el.confirm();
-  toggleDatePicker()
-}
-
-const toggleDatePicker = () => {
-  datetimeOpen.value = !datetimeOpen.value
-  btnAccountShow.value = !btnAccountShow.value
-}
 
 const openToast = (state: boolean) => isOpen.value = state
 
@@ -314,17 +272,6 @@ ion-range::part(pin) {
   transform: scale(1.01);
 
   top: -25px;
-}
-
-ion-datetime {
-  margin-left: 1%;
-  margin-bottom: 20px;
-  min-width: 98%;
-  border-radius: 6px;
-  box-shadow: rgba(var(--ion-color-tertiary-rgb), 0.2) 0 5px 12px -3px;
-
-  --background: #f6f8fc;
-  --background-rgb: 246,248,252;
 }
 
 .col-gender {

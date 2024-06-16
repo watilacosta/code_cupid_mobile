@@ -6,7 +6,7 @@ import { useAuthStore } from '@/store/auth';
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    redirect: '/tabs/home'
+    redirect: '/tabs/timeline'
   },
   {
     path: '/login',
@@ -39,12 +39,12 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: '',
-        redirect: '/tabs/home'
+        redirect: '/tabs/timeline'
       },
       {
-        path: 'home',
-        name: 'Home',
-        component: () => import('@/views/HomePage.vue')
+        path: 'timeline',
+        name: 'Timeline',
+        component: () => import('@/views/TimeLinePage.vue')
       },
       {
         path: 'like',
@@ -79,7 +79,7 @@ router.beforeEach(async (to, from, next) => {
     if (notAuthenticated && !authRoutes.includes(to.name)) {
       next({ name: "Login" })
     } else if (authStore.isAuthenticated && authRoutes.includes(to.name)) {
-      next({ name: "Home" })
+      next({ name: "Timeline" })
     } else {
       next()
     }
