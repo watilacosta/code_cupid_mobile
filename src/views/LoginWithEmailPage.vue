@@ -43,7 +43,8 @@
               placeholder="Password"
               error-text="Invalid password"
             >
-            <ion-icon slot="start" :icon="lockClosed" aria-hidden="true" />
+              <ion-icon slot="start" :icon="lockClosed" aria-hidden="true" />
+              <ion-input-password-toggle slot="end" color="dark" />
             </ion-input>
           </ion-col>
         </ion-row>
@@ -101,6 +102,7 @@ import {
   IonImg,
   IonIcon,
   IonButton,
+  IonInputPasswordToggle,
   useIonRouter
 } from '@ionic/vue'
 import { lockClosed, mailSharp } from 'ionicons/icons';

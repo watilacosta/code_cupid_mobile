@@ -2,34 +2,15 @@
   <ion-page>
     <ion-content :fullscreen="true" color="light">
       <LoaderBar v-if="showLoaderBar" />
-      <ion-row class="ion-justify-content-end">
-        <ion-col size="6">
-          <ion-thumbnail>
-            <ion-img
-                src="resources/logo.png"
-                alt="logo code cupid"
-                class="ion-margin-vertical"
-            >
-            </ion-img>
-          </ion-thumbnail>
-        </ion-col>
-        <ion-col size="2">
-          <ion-button shape="round" fill="clear" color="dark">
-            <ion-icon :icon="funnelOutline" slot="icon-only"></ion-icon>
-          </ion-button>
-        </ion-col>
-      </ion-row>
-
-      <div v-for="profile in profiles"
-        :key="profile.id"
+      <TimeLineHeader />
+      <div
+        v-if="currentProfile"
+        class="card-container ion-margin-horizontal"
       >
-        <div class="card-container ion-margin-horizontal">
-          <ion-card class="ion-no-margin">
-            <img src="/resources/myphoto.jpg" alt="timeline-photo"/>
-            <div class="card-text">{{ profile.username || 'Guest' }}, {{ profile.age }}</div>
-          </ion-card>
-        </div>
-  
+        <SwipeCard @onSwipeEnd="handleSwipeEnd">
+          <img :src="currentProfile.photoUrl || '/resources/myphoto.jpg'" alt="timeline-photo"/>
+          <div class="card-text">{{ currentProfile.username || 'Guest' }}, {{ currentProfile.age }}</div>
+        </SwipeCard>
         <ion-grid>
           <ion-row class="ion-justify-content-around ion-margin-vertical ion-padding-vertical">
             <ion-col size="3" class="ion-padding-start ion-margin-start">
@@ -50,34 +31,36 @@
 </template>
 
 <script setup lang="ts">
-import TimeLineService from '@/services/TimeLineService';
 import {
   IonPage,
   IonContent,
   IonRow,
   IonCol,
   IonGrid,
-  IonThumbnail,
-  IonImg,
-  IonCard,
   IonIcon,
   IonButton,
-  IonSpinner,
   onIonViewWillEnter,
 } from '@ionic/vue';
-import { closeOutline, funnelOutline, heartSharp } from "ionicons/icons";
-import { ref } from 'vue';
+import { closeOutline, heartSharp } from "ionicons/icons";
+import {computed, ref} from 'vue';
 import LoaderBar from "@/components/LoaderBar.vue";
+import SwipeCard from "@/components/SwipeCard.vue";
+import TimeLineHeader from "@/components/TimeLineHeader.vue";
+import TimeLineService from '@/services/TimeLineService';
 
 const service = TimeLineService;
 const profiles = ref([] as Array<Profile>);
 const showLoaderBar = ref(false)
+const currentIndex = ref(0)
+
+const currentProfile = computed(() => profiles.value[currentIndex.value])
 
 interface Profile {
   id: number,
   username: string,
   age: number,
-  gender: string
+  gender: string,
+  photoUrl?: string // Add photoUrl field
 }
 
 const listProfiles = async () => {
@@ -86,8 +69,16 @@ const listProfiles = async () => {
       profiles.value = response.data
     })
     .catch((error) => console.log(error))
+    .finally(() => showLoaderBar.value = false)
+}
 
-  showLoaderBar.value = false
+const handleSwipeEnd = () => {
+  if (currentIndex.value < profiles.value.length - 1) {
+    console.log(currentIndex.value)
+    currentIndex.value += 1;
+  } else {
+    alert('Não há mais perfis à serem mostrados com esses filtros.')
+  }
 }
 
 onIonViewWillEnter(() => {
@@ -97,18 +88,6 @@ onIonViewWillEnter(() => {
 </script>
 
 <style scoped>
-ion-spinner {
-  width: 100px;
-  height: 100px;
-}
-
-ion-thumbnail {
-  margin-top: 5%;
-  --size: 120px;
-  --border-radius: 1px;
-  height: 40px;
-}
-
 ion-button {
   width: 64px;
   height: 64px;
