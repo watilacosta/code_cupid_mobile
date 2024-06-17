@@ -20,22 +20,10 @@ const props = defineProps({
   }
 })
 
-onMounted(() => {
-  if (card.value) {
-    const gesture = createGesture({
-      el: card.value,
-      gestureName: 'swipe',
-      onStart,
-      onMove,
-      onEnd,
-      threshold: 15,
-    });
-    gesture.enable();
-  }
-});
+const emit = defineEmits(['swipeEnd']);
 
 const onStart = (detail: GestureDetail) => {
-  startX.value = detail.startX
+  startX.value = detail.startX;
 }
 
 const onMove = (detail: GestureDetail) => {
@@ -53,7 +41,7 @@ const onEnd = () => {
       card.value.style.transform = `translateX(${currentX.value > 0 ? 1000 : -1000}px) rotate(${currentX.value / 10}deg)`;
 
       setTimeout(() => {
-        props.onSwipeEnd()
+        emit('swipeEnd')
       }, 300);
     } else {
       card.value.style.transition = 'transform 0.3s ease-out';
@@ -67,6 +55,20 @@ const onEnd = () => {
     }, 300);
   }
 };
+
+onMounted(() => {
+  if (card.value) {
+    const gesture = createGesture({
+      el: card.value,
+      gestureName: 'swipe',
+      onStart,
+      onMove,
+      onEnd,
+      threshold: 15,
+    });
+    gesture.enable();
+  }
+});
 </script>
 
 <style scoped>

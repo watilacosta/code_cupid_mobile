@@ -7,9 +7,12 @@
         v-if="currentProfile"
         class="card-container ion-margin-horizontal"
       >
-        <SwipeCard @onSwipeEnd="handleSwipeEnd">
+        <SwipeCard @swipeEnd="handleSwipeEnd">
           <img :src="currentProfile.photoUrl || '/resources/myphoto.jpg'" alt="timeline-photo"/>
-          <div class="card-text">{{ currentProfile.username || 'Guest' }}, {{ currentProfile.age }}</div>
+          <div class="card-text">
+            {{ currentProfile.username || 'Guest' }},
+            {{ currentProfile.age }}
+          </div>
         </SwipeCard>
         <ion-grid>
           <ion-row class="ion-justify-content-around ion-margin-vertical ion-padding-vertical">
