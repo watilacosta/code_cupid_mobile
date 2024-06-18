@@ -13,13 +13,6 @@ const startX = ref(0);
 const currentX = ref(0);
 const threshold = ref(100);
 
-const props = defineProps({
-  onSwipeEnd: {
-    type: Function,
-    required: true
-  }
-})
-
 const emit = defineEmits(['swipeEnd']);
 
 const onStart = (detail: GestureDetail) => {

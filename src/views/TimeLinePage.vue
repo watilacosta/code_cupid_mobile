@@ -77,7 +77,6 @@ const listProfiles = async () => {
 
 const handleSwipeEnd = () => {
   if (currentIndex.value < profiles.value.length - 1) {
-    console.log(currentIndex.value)
     currentIndex.value += 1;
   } else {
     alert('Não há mais perfis à serem mostrados com esses filtros.')
