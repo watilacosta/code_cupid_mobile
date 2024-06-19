@@ -1,7 +1,7 @@
 <template>
-  <ion-card ref="card" class="ion-no-margin">
+  <div class="card" ref="card">
     <slot></slot>
-  </ion-card>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -65,8 +65,9 @@ onMounted(() => {
 </script>
 
 <style scoped>
-ion-card {
-  user-select: none;
-  will-change: transform;
+.card {
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
 }
 </style>

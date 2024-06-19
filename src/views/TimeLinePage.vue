@@ -7,12 +7,14 @@
         v-if="currentProfile"
         class="card-container ion-margin-horizontal"
       >
-        <SwipeCard @swipeEnd="handleSwipeEnd">
-          <img :src="currentProfile.photoUrl || '/resources/myphoto.jpg'" alt="timeline-photo"/>
-          <div class="card-text">
-            {{ currentProfile.username || 'Guest' }},
-            {{ currentProfile.age }}
-          </div>
+        <SwipeCard @swipeEnd="handleSwipeEnd" :key="currentProfile.id">
+          <ion-card class="ion-no-margin ion-no-padding">
+            <img class="photo" :src="currentProfile.photoUrl || '/resources/myphoto.jpg'" alt="timeline-photo"/>
+            <div class="card-text">
+              {{ currentProfile.username || 'Guest' }},
+              {{ currentProfile.age }}
+            </div>
+          </ion-card>
         </SwipeCard>
         <ion-grid>
           <ion-row class="ion-justify-content-around ion-margin-vertical ion-padding-vertical">
@@ -42,6 +44,7 @@ import {
   IonGrid,
   IonIcon,
   IonButton,
+  IonCard,
   onIonViewWillEnter,
 } from '@ionic/vue';
 import { closeOutline, heartSharp } from "ionicons/icons";
@@ -50,26 +53,23 @@ import LoaderBar from "@/components/LoaderBar.vue";
 import SwipeCard from "@/components/SwipeCard.vue";
 import TimeLineHeader from "@/components/TimeLineHeader.vue";
 import TimeLineService from '@/services/TimeLineService';
+import { Profile } from "@/models/Profile";
+import {useTimelineProfiles} from "@/store/timeline_profiles";
 
 const service = TimeLineService;
 const profiles = ref([] as Array<Profile>);
 const showLoaderBar = ref(false)
 const currentIndex = ref(0)
 
-const currentProfile = computed(() => profiles.value[currentIndex.value])
+const profileStore = useTimelineProfiles()
 
-interface Profile {
-  id: number,
-  username: string,
-  age: number,
-  gender: string,
-  photoUrl?: string // Add photoUrl field
-}
+const currentProfile = computed(() => profiles.value[currentIndex.value])
 
 const listProfiles = async () => {
   await service.list()
     .then((response) => {
-      profiles.value = response.data
+      profileStore.setProfiles(response.data);
+      profiles.value = profileStore.listProfiles
     })
     .catch((error) => console.log(error))
     .finally(() => showLoaderBar.value = false)
@@ -78,8 +78,11 @@ const listProfiles = async () => {
 const handleSwipeEnd = () => {
   if (currentIndex.value < profiles.value.length - 1) {
     currentIndex.value += 1;
+    profiles.value = profileStore
+      .listProfiles
+      .filter((_, index) => index > (currentIndex.value - 1));
   } else {
-    alert('Não há mais perfis à serem mostrados com esses filtros.')
+    alert('Sem perfis.');
   }
 }
 
@@ -90,6 +93,11 @@ onIonViewWillEnter(() => {
 </script>
 
 <style scoped>
+ion-card {
+  user-select: none;
+  will-change: transform;
+}
+
 ion-button {
   width: 64px;
   height: 64px;
@@ -109,12 +117,13 @@ ion-button {
   position: relative;
   border-radius: 5%;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
 }
 
 .card-container ion-card img {
   object-fit: cover;
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   border-radius: 5%;
 }
 
@@ -128,5 +137,12 @@ ion-button {
   border-radius: 5px;
   font-size: 20px;
   font-weight: bold;
+}
+
+.photo {
+  width: 100%;
+  height: 600px;
+  object-fit: cover;
+  border-radius: 5%;
 }
 </style>
