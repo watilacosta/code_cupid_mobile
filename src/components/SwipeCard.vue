@@ -12,6 +12,8 @@ const card = ref<HTMLElement | null>(null);
 const startX = ref(0);
 const currentX = ref(0);
 const threshold = ref(100);
+const showLikeIcon = ref(155);
+const showDislikeIcon = ref(-155);
 
 const emit = defineEmits(['swipeEnd']);
 
@@ -21,6 +23,14 @@ const onStart = (detail: GestureDetail) => {
 
 const onMove = (detail: GestureDetail) => {
   currentX.value = detail.currentX - startX.value;
+
+  if (currentX.value > showLikeIcon.value) {
+    console.log("Show Like Icon")
+  }
+
+  if (currentX.value < showDislikeIcon.value) {
+    console.log("Show Dislike Icon")
+  }
 
   if (card.value) {
     card.value.style.transform = `translateX(${currentX.value}px) rotate(${currentX.value / 10}deg)`;
