@@ -11,9 +11,12 @@ class TimeLineService {
         url: '/timeline',
         headers: { Authorization: authStore.getAuthToken },
         params: {
-          search: '*',
-          age: 18,
-          gender: 'female'
+          timeline: {
+            search: '*',
+            min_age: 18,
+            max_age: 120,
+            gender: 'female'
+          }
         }
       }
     )
