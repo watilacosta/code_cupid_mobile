@@ -7,7 +7,12 @@
         v-if="currentProfile"
         class="card-container ion-margin-horizontal"
       >
-        <SwipeCard @swipeEnd="handleSwipeEnd" :key="currentProfile.id">
+        <SwipeCard
+          @swipeEnd="handleSwipeEnd"
+          @like="likeOrDislikeProfile(true)"
+          @dislike="likeOrDislikeProfile(false)"
+          :key="currentProfile.id"
+        >
           <ion-card class="ion-no-margin ion-no-padding">
             <img
               class="photo"
@@ -87,6 +92,10 @@ const listProfiles = async () => {
     })
     .catch((error) => console.log(error))
     .finally(() => showLoaderBar.value = false)
+}
+
+const likeOrDislikeProfile = (value: Boolean) => {
+  value ? console.log('Like') : console.log('dislike')
 }
 
 const handleSwipeEnd = () => {

@@ -15,7 +15,7 @@ const threshold = ref(100);
 const minValueToLike = ref(155);
 const minValueToDislike = ref(-155);
 
-const emit = defineEmits(['swipeEnd']);
+const emit = defineEmits(['swipeEnd', 'like', 'dislike']);
 
 const onStart = (detail: GestureDetail) => {
   startX.value = detail.startX;
@@ -46,9 +46,8 @@ const onEnd = () => {
         ${currentX.value > 0 ? 1000 : -1000}px) rotate(
         ${currentX.value / 10}deg)`;
 
-      currentX.value > 0 ? likeUser() : dislikeUser()
-
       setTimeout(() => {
+        currentX.value > 0 ? emit('like') : emit('dislike')
         emit('swipeEnd')
       }, 300);
     } else {
@@ -63,14 +62,6 @@ const onEnd = () => {
     }, 300);
   }
 };
-
-const likeUser = (() => {
-  console.log("Like")
-})
-
-const dislikeUser = (() => {
-  console.log("Dislike")
-})
 
 onMounted(() => {
   if (card.value) {
