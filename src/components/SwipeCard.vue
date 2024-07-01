@@ -17,9 +17,7 @@ const minValueToDislike = ref(-155);
 
 const emit = defineEmits(['swipeEnd', 'like', 'dislike']);
 
-const onStart = (detail: GestureDetail) => {
-  startX.value = detail.startX;
-}
+const onStart = (detail: GestureDetail) => startX.value = detail.startX;
 
 const onMove = (detail: GestureDetail) => {
   currentX.value = detail.currentX - startX.value;
