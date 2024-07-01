@@ -14,7 +14,7 @@ class TimeLineService {
           timeline: {
             search: '*',
             min_age: 18,
-            max_age: 120,
+            max_age: 19,
             gender: 'female'
           }
         }

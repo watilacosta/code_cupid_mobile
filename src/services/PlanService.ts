@@ -1,6 +1,6 @@
 import api from "@/utils/api";
 import { useAuthStore } from "@/store/auth";
-import {Plan} from "@/models/Plan";
+import { Plan } from "@/models/Plan";
 
 const authStore = useAuthStore();
 
