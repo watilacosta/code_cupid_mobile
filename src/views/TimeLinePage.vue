@@ -9,7 +9,11 @@
       >
         <SwipeCard @swipeEnd="handleSwipeEnd" :key="currentProfile.id">
           <ion-card class="ion-no-margin ion-no-padding">
-            <img class="photo" :src="currentProfile.photoUrl || '/resources/myphoto.jpg'" alt="timeline-photo"/>
+            <img
+              class="photo"
+              :src="currentProfile.photoUrl || '/resources/myphoto.jpg'"
+              alt="timeline-photo"
+            />
             <div class="card-text">
               {{ currentProfile.username || 'Guest' }},
               {{ currentProfile.age }}
@@ -17,15 +21,25 @@
           </ion-card>
         </SwipeCard>
         <ion-grid>
-          <ion-row class="ion-justify-content-around ion-margin-vertical ion-padding-vertical">
+          <ion-row class="ion-justify-content-around ion-margin-vertical
+            ion-padding-vertical"
+          >
             <ion-col size="3" class="ion-padding-start ion-margin-start">
               <ion-button shape="round" color="danger">
-                <ion-icon :icon="closeOutline" slot="icon-only" size="large"></ion-icon>
+                <ion-icon
+                  :icon="closeOutline"
+                  slot="icon-only"
+                  size="large">
+                </ion-icon>
               </ion-button>
             </ion-col>
             <ion-col size="3" class="ion-padding-start ion-margin-start">
               <ion-button shape="round">
-                <ion-icon :icon="heartSharp" slot="icon-only" size="large"></ion-icon>
+                <ion-icon
+                  :icon="heartSharp"
+                  slot="icon-only"
+                  size="large">
+                </ion-icon>
               </ion-button>
             </ion-col>
           </ion-row>

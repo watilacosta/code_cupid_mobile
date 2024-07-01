@@ -12,8 +12,8 @@ const card = ref<HTMLElement | null>(null);
 const startX = ref(0);
 const currentX = ref(0);
 const threshold = ref(100);
-const showLikeIcon = ref(155);
-const showDislikeIcon = ref(-155);
+const minValueToLike = ref(155);
+const minValueToDislike = ref(-155);
 
 const emit = defineEmits(['swipeEnd']);
 
@@ -24,16 +24,17 @@ const onStart = (detail: GestureDetail) => {
 const onMove = (detail: GestureDetail) => {
   currentX.value = detail.currentX - startX.value;
 
-  if (currentX.value > showLikeIcon.value) {
+  if (currentX.value > minValueToLike.value) {
     console.log("Show Like Icon")
   }
 
-  if (currentX.value < showDislikeIcon.value) {
+  if (currentX.value < minValueToDislike.value) {
     console.log("Show Dislike Icon")
   }
 
   if (card.value) {
-    card.value.style.transform = `translateX(${currentX.value}px) rotate(${currentX.value / 10}deg)`;
+    card.value.style.transform = `translateX(${currentX.value}px)
+                                  rotate(${currentX.value / 10}deg)`;
   }
 };
 
@@ -41,7 +42,11 @@ const onEnd = () => {
   if (card.value) {
     if (Math.abs(currentX.value) > threshold.value) {
       card.value.style.transition = 'transform 0.3s ease-out';
-      card.value.style.transform = `translateX(${currentX.value > 0 ? 1000 : -1000}px) rotate(${currentX.value / 10}deg)`;
+      card.value.style.transform = `translateX(
+        ${currentX.value > 0 ? 1000 : -1000}px) rotate(
+        ${currentX.value / 10}deg)`;
+
+      currentX.value > 0 ? likeUser() : dislikeUser()
 
       setTimeout(() => {
         emit('swipeEnd')
@@ -58,6 +63,14 @@ const onEnd = () => {
     }, 300);
   }
 };
+
+const likeUser = (() => {
+  console.log("Like")
+})
+
+const dislikeUser = (() => {
+  console.log("Dislike")
+})
 
 onMounted(() => {
   if (card.value) {
