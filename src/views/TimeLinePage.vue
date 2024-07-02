@@ -67,13 +67,13 @@ import {
   onIonViewWillEnter,
 } from '@ionic/vue';
 import { closeOutline, heartSharp } from "ionicons/icons";
-import {computed, ref} from 'vue';
+import { computed, ref } from 'vue';
 import LoaderBar from "@/components/LoaderBar.vue";
 import SwipeCard from "@/components/SwipeCard.vue";
 import TimeLineHeader from "@/components/TimeLineHeader.vue";
 import TimeLineService from '@/services/TimeLineService';
 import { Profile } from "@/models/Profile";
-import {useTimelineProfiles} from "@/store/timeline_profiles";
+import { useTimelineProfiles } from "@/store/timeline_profiles";
 import { useUserStore } from '@/store/user';
 import LikeService from '@/services/LikeService';
 
@@ -94,6 +94,11 @@ interface Like {
 const profileStore = useTimelineProfiles()
 
 const currentProfile = computed(() => profiles.value[currentIndex.value])
+
+onIonViewWillEnter(() => {
+  showLoaderBar.value = true
+  listProfiles()
+})
 
 const buildReaction = (dislike: boolean) => {
   const reaction: Like = {
@@ -146,11 +151,6 @@ const handleSwipeEnd = () => {
     alert('Sem perfis.');
   }
 }
-
-onIonViewWillEnter(() => {
-  showLoaderBar.value = true
-  listProfiles()
-})
 </script>
 
 <style scoped>
