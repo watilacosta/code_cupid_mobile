@@ -132,8 +132,7 @@ const likeOrDislikeProfile = async (isLike: boolean) => {
   }
 
   await likeService.like(parsedReaction)
-    .then((response) => {
-      console.log(response)
+    .then(() => {
     })
     .catch((error) => {
       console.warn(error)
