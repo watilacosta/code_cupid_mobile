@@ -67,25 +67,52 @@ import {
   onIonViewWillEnter,
 } from '@ionic/vue';
 import { closeOutline, heartSharp } from "ionicons/icons";
-import {computed, ref} from 'vue';
+import { computed, ref } from 'vue';
 import LoaderBar from "@/components/LoaderBar.vue";
 import SwipeCard from "@/components/SwipeCard.vue";
 import TimeLineHeader from "@/components/TimeLineHeader.vue";
 import TimeLineService from '@/services/TimeLineService';
 import { Profile } from "@/models/Profile";
-import {useTimelineProfiles} from "@/store/timeline_profiles";
+import { useTimelineProfiles } from "@/store/timeline_profiles";
+import { useUserStore } from '@/store/user';
+import LikeService from '@/services/LikeService';
 
-const service = TimeLineService;
+const timelineService = TimeLineService;
+const likeService = LikeService;
 const profiles = ref([] as Array<Profile>);
 const showLoaderBar = ref(false)
 const currentIndex = ref(0)
+const userStore = useUserStore()
+
+interface Like {
+  userId: number,
+  likeableId: number,
+  likeableType: string,
+  dislike: boolean
+}
 
 const profileStore = useTimelineProfiles()
 
 const currentProfile = computed(() => profiles.value[currentIndex.value])
 
+onIonViewWillEnter(() => {
+  showLoaderBar.value = true
+  listProfiles()
+})
+
+const buildReaction = (dislike: boolean) => {
+  const reaction: Like = {
+    userId: userStore.getCurrentUser.id,
+    likeableId: currentProfile.value.id,
+    likeableType: 'User',
+    dislike: dislike
+  }
+
+  return reaction
+}
+
 const listProfiles = async () => {
-  await service.list()
+  await timelineService.list()
     .then((response) => {
       profileStore.setProfiles(response.data);
       profiles.value = profileStore.listProfiles
@@ -94,10 +121,24 @@ const listProfiles = async () => {
     .finally(() => showLoaderBar.value = false)
 }
 
-const likeOrDislikeProfile = (value: boolean) => {
-  value ? console.log('Like') : console.log('dislike')
+const likeOrDislikeProfile = async (isLike: boolean) => {
+  showLoaderBar.value = true
+  const reaction = isLike ? buildReaction(false) : buildReaction(true)
+  const parsedReaction = {
+    likeable_id: reaction.likeableId,
+    likeable_type: reaction.likeableType,
+    user_id: reaction.userId,
+    dislike: reaction.dislike
+  }
 
-  console.log(profiles)
+  await likeService.like(parsedReaction)
+    .then((response) => {
+      console.log(response)
+    })
+    .catch((error) => {
+      console.warn(error)
+    })
+    .finally(() => showLoaderBar.value = false)
 }
 
 const handleSwipeEnd = () => {
@@ -110,11 +151,6 @@ const handleSwipeEnd = () => {
     alert('Sem perfis.');
   }
 }
-
-onIonViewWillEnter(() => {
-  showLoaderBar.value = true
-  listProfiles()
-})
 </script>
 
 <style scoped>
