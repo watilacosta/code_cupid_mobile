@@ -94,8 +94,10 @@ const listProfiles = async () => {
     .finally(() => showLoaderBar.value = false)
 }
 
-const likeOrDislikeProfile = (value: Boolean) => {
+const likeOrDislikeProfile = (value: boolean) => {
   value ? console.log('Like') : console.log('dislike')
+
+  console.log(profiles)
 }
 
 const handleSwipeEnd = () => {
