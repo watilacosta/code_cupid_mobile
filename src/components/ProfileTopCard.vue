@@ -13,7 +13,7 @@
         </ion-thumbnail>
 
         <ion-fab horizontal="end">
-          <ion-fab-button size="small" color="light">
+          <ion-fab-button size="small" color="light" id="present-alert">
             <ion-icon :icon="pencilSharp" color="primary"></ion-icon>
           </ion-fab-button>
         </ion-fab>
@@ -26,9 +26,13 @@
           </h2>
         </ion-text>
       </ion-row>
+      <ion-row>
+        <FormAlert />
+      </ion-row>
     </ion-card-content>
   </ion-card>
 </template>
+
 <script setup lang="ts">
 import { pencilSharp } from "ionicons/icons";
 import {
@@ -45,6 +49,7 @@ import {
 import { User } from "@/models/User";
 import {computed} from "vue";
 import ProfileTitle from "@/components/ProfileTitle.vue";
+import FormAlert from "@/components/FormAlert.vue";
 
 const props = defineProps({
   user: {}
@@ -52,6 +57,7 @@ const props = defineProps({
 
 const computedUser = computed(() => props.user as User)
 </script>
+
 <style scoped>
 ion-card {
   border-bottom-left-radius: 200px 25px;
